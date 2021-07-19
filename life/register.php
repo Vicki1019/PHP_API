@@ -17,7 +17,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     ) {
         $emailCheck = $dbHelper->emailCheck($email);
         if($emailCheck != true){
-            print("failure");
+            print("email is exist");
         }else{
             $insertResult = $dbHelper->insert($name, $email, $passwd);
             if ($insertResult == 1) {

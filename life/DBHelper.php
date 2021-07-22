@@ -57,33 +57,6 @@
         //     return $result;
         // }
 
-       /**
-         * 產生隨機亂數
-         *
-         */
-        public function randomstr($length=5)
-        {
-            $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            $random_str = substr(str_shuffle($str), 0, $length);
-            return $random_str;
-        }
-
-        /**
-         * 檢查隨機亂數是否重複
-         *
-         */
-        public function randomstrCheck($group_no)
-        {
-            $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
-            mysqli_query($this->connect, $sql);
-            $result = $this->connect->affected_rows;
-            if($result != 0){
-                return false;
-            }else{
-                return true;
-            }
-        }
-
         /**
          * 新增帳號
          *
@@ -101,6 +74,19 @@
             $sql = "INSERT INTO member_info(group_no, member_nickname, email, passwd)
                     VALUES ('$group_no', '$name', '$email', '$passwd')";
             // $sql = "INSERT INTO message_board(name, content) value('$name', '$content')";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 1){
+                return false;
+            }else{
+                return $result;
+            }
+        }
+
+        public function group($group_no, $name)
+        {
+            $spl = "INSERT INTO group_code(group_no, group_cn)
+                    VALUES ('$group_no', '$name')";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
             if($result != 1){
@@ -135,6 +121,25 @@
         public function emailCheck($email)
         {
             $sql = "SELECT 'email' FROM member_info WHERE email='$email'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        
+        public function randomstr($length=5)
+        {
+            $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $random_str = substr(str_shuffle($str), 0, $length);
+            return $random_str;
+        }
+
+        public function randomstrCheck($group_no)
+        {
+            $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
             if($result != 0){

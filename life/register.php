@@ -29,6 +29,14 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
             } else {
                 print("failure");
             }
+
+            $groupResult = $dbHelper->group($group_no, $name);
+            if ($groupResult == 1) {
+                print("success");
+            } else {
+                print("failure");
+            }
+            
         }
     }
     

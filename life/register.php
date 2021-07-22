@@ -13,22 +13,24 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     $passwdck = validate($_POST['passwdck']);
     $group_no = $dbHelper->randomstr(5);
     $randomstrCheck = $dbHelper->randomstrCheck($group_no);
+    print($group_no . " ");
+    print($randomstrCheck);
 
-    if($randomstrCheck !=true) $group_no = $dbHelper->randomstr(5);
+    // if($randomstrCheck !=true) $group_no = $dbHelper->randomstr(5);
 
-    if (
-        !empty($name) && !empty($email) && !empty($passwd)
-    ) {
-        $emailCheck = $dbHelper->emailCheck($email);
-        if($emailCheck != true){
-            print("email is exist");
-        }else{
-            $insertResult = $dbHelper->register($group_no, $name, $email, $passwd);
-            if ($insertResult == 1) {
-                print("success");
-            } else {
-                print("failure");
-            }
-        }
-    }
+    // if (
+    //     !empty($name) && !empty($email) && !empty($passwd)
+    // ) {
+    //     $emailCheck = $dbHelper->emailCheck($email);
+    //     if($emailCheck != true){
+    //         print("email is exist");
+    //     }else{
+    //         $insertResult = $dbHelper->register($group_no, $name, $email, $passwd);
+    //         if ($insertResult == 1) {
+    //             print("success");
+    //         } else {
+    //             print("failure");
+    //         }
+    //     }
+    // }
 }

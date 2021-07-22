@@ -74,10 +74,9 @@
          */
         public function randomstrCheck($group_no)
         {
-            $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
-            mysqli_query($this->connect, $sql);
-            $result = $this->connect->affected_rows;
-            if($result != 0){
+            $sql =  "SELECT group_no FROM member_info WHERE group_no='$group_no'";
+            $result = mysqli_query($this->connect, $sql);
+            if($result->num_rows > 0){
                 return false;
             }else{
                 return true;

@@ -12,6 +12,9 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     $passwd = validate($_POST['passwd']);
     $passwdck = validate($_POST['passwdck']);
     $group_no = $dbHelper->randomstr(5);
+    $randomstrCheck = $dbHelper->randomstrCheck($group_no);
+
+    if($randomstrCheck !=true) $group_no = $dbHelper->randomstr(5);
 
     if (
         !empty($name) && !empty($email) && !empty($passwd)

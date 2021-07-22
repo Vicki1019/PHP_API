@@ -79,7 +79,7 @@
          *
          * @return mixed
          */
-        public function register($group_no,$name, $email, $passwd)
+        public function register($name, $email, $passwd)
         {
             $group_no = random_no(5); //預設長度5
             $sql = "INSERT INTO member_info(group_no, member_nickname, email, passwd)

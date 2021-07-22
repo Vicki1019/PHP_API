@@ -11,6 +11,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     $email = validate($_POST['email']);
     $passwd = validate($_POST['passwd']);
     $passwdck = validate($_POST['passwdck']);
+    $group_no = $dbHelper->randomstr(5);
 
     if (
         !empty($name) && !empty($email) && !empty($passwd)
@@ -19,7 +20,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
         if($emailCheck != true){
             print("email is exist");
         }else{
-            $insertResult = $dbHelper->insert($name, $email, $passwd);
+            $insertResult = $dbHelper->register($group_no, $name, $email, $passwd);
             if ($insertResult == 1) {
                 print("success");
             } else {

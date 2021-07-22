@@ -61,7 +61,7 @@
          * 產生隨機亂數
          *
          */
-        public function random_no($length=5)
+        public function randomstr($length=5)
         {
             $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             $random_str = substr(str_shuffle($str), 0, $length);
@@ -79,9 +79,8 @@
          *
          * @return mixed
          */
-        public function register($name, $email, $passwd)
+        public function register($group_no, $name, $email, $passwd)
         {
-            $group_no = $dbHelper->random_no(5);
             $sql = "INSERT INTO member_info(group_no, member_nickname, email, passwd)
                     VALUES ('$group_no', '$name', '$email', '$passwd')";
             // $sql = "INSERT INTO message_board(name, content) value('$name', '$content')";

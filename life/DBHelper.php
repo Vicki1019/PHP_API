@@ -57,6 +57,17 @@
         //     return $result;
         // }
 
+       /**
+         * 產生隨機亂數
+         *
+         */
+        public function random_no($length)
+        {
+            $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $random_str = substr(str_shuffle($str), 0, $length);
+            return $random_str;
+        }
+
         /**
          * 新增帳號
          *
@@ -68,10 +79,11 @@
          *
          * @return mixed
          */
-        public function insert($name, $email, $passwd)
+        public function register($group_no,$name, $email, $passwd)
         {
+            $group_no = random_no(5); //預設長度5
             $sql = "INSERT INTO member_info(group_no, member_nickname, email, passwd)
-                    VALUES ('1', '$name', '$email', '$passwd')";
+                    VALUES ('$group_no', '$name', '$email', '$passwd')";
             // $sql = "INSERT INTO message_board(name, content) value('$name', '$content')";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;

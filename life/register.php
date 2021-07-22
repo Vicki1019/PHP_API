@@ -19,7 +19,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
         if($emailCheck != true){
             print("failure");
         }else{
-            $insertResult = $dbHelper->insert($name, $email, $passwd);
+            $insertResult = $dbHelper->register($name, $email, $passwd);
             if ($insertResult == 1) {
                 print("success");
             } else {

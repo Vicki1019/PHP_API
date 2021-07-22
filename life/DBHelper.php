@@ -69,8 +69,25 @@
         }
 
         /**
+         * 檢查隨機亂數是否重複
+         *
+         */
+        public function randomstrCheck($group_no)
+        {
+            $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        /**
          * 新增帳號
          *
+         * @param string $group_no 群組編號
          * @param string $name 暱稱
          * @param string $email 信箱
          * @param string $passwd 密碼

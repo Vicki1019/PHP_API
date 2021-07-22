@@ -83,6 +83,16 @@
             }
         }
 
+        /**
+         * 記錄群組
+         *
+         * @param string $group_no 群組碼
+         * @param string $name 名稱
+         *
+         * @var string $sql 新增群組
+         *
+         * @return mixed
+         */
         public function group($group_no, $name)
         {
             $sql = "INSERT INTO group_code(group_no, group_cn)
@@ -118,6 +128,15 @@
             }
         }
 
+        /**
+         * 信箱驗證是否重複
+         *
+         * @param string $email 信箱
+         *
+         * @var string $sql 查找帳號
+         *
+         * @return bool
+         */
         public function emailCheck($email)
         {
             $sql = "SELECT 'email' FROM member_info WHERE email='$email'";
@@ -130,6 +149,15 @@
             }
         }
 
+        /**
+         * 產生群組亂碼
+         *
+         * @param string $length 長度
+         *
+         * @var string $str 亂碼字典
+         *
+         * @return string $random_str
+         */
         public function randomstr($length=5)
         {
             $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -137,12 +165,21 @@
             return $random_str;
         }
 
+        /**
+         * 檢查群組亂碼是否重複
+         *
+         * @param string $group_no 群組亂碼
+         *
+         * @var string $sql 查詢亂碼
+         * @var mysqli_result|bool $result 查詢結果
+         *
+         * @return bool
+         */
         public function randomstrCheck($group_no)
         {
             $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
-            mysqli_query($this->connect, $sql);
-            $result = $this->connect->affected_rows;
-            if($result != 0){
+            $result = mysqli_query($this->connect, $sql);
+            if($result->num_rows > 0){
                 return false;
             }else{
                 return true;

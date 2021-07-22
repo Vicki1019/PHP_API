@@ -85,7 +85,7 @@
 
         public function group($group_no, $name)
         {
-            $spl = "INSERT INTO group_code(group_no, group_cn)
+            $sql = "INSERT INTO group_code(group_no, group_cn)
                     VALUES ('$group_no', '$name')";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
@@ -129,7 +129,7 @@
                 return true;
             }
         }
-        
+
         public function randomstr($length=5)
         {
             $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

@@ -13,8 +13,8 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     $passwdck = validate($_POST['passwdck']);
     $group_no = $dbHelper->randomstr(5);
     $randomstrCheck = $dbHelper->randomstrCheck($group_no);
-    print($group_no . " ");
-    print($randomstrCheck);
+   /* print($group_no . " ");
+    print($randomstrCheck);*/
 
     while (!$randomstrCheck) {
         $group_no = $dbHelper->randomstr(5);

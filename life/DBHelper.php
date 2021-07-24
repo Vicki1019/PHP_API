@@ -187,6 +187,21 @@
         }
 
         /**
+         * 取得單位資料
+         *
+         * @var string $sql 查詢資料表中 unit_cn欄位的資料
+         *
+         * @return object
+         */
+        public function getunit()
+        {
+            $sql = 'SELECT unit_cn FROM unit_code';
+            $result = mysqli_query($this->connect, $sql);
+
+             return $result;
+        }
+
+        /**
          * 解構子
          *
          * 關閉資料庫

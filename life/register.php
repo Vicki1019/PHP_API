@@ -11,6 +11,17 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
     $email = validate($_POST['email']);
     $passwd = validate($_POST['passwd']);
     $passwdck = validate($_POST['passwdck']);
+    $group_no = $dbHelper->randomstr(5);
+    $randomstrCheck = $dbHelper->randomstrCheck($group_no);
+   /* print($group_no . " ");
+    print($randomstrCheck);*/
+
+    while (!$randomstrCheck) {
+        $group_no = $dbHelper->randomstr(5);
+        $randomstrCheck = $dbHelper->randomstrCheck($group_no);
+    }
+
+    // if($randomstrCheck !=true) $group_no = $dbHelper->randomstr(5);
 
     if (
         !empty($name) && !empty($email) && !empty($passwd)
@@ -19,8 +30,9 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) &
         if($emailCheck != true){
             print("failure");
         }else{
-            $insertResult = $dbHelper->insert($name, $email, $passwd);
-            if ($insertResult == 1) {
+            $insertResult = $dbHelper->register($group_no, $name, $email, $passwd);
+            $groupResult = $dbHelper->group($group_no, $name);
+            if ($insertResult == 1 && $groupResult == 1) {
                 print("success");
             } else {
                 print("failure");

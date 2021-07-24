@@ -60,6 +60,7 @@
         /**
          * 新增帳號
          *
+         * @param string $group_no 群組編號
          * @param string $name 暱稱
          * @param string $email 信箱
          * @param string $passwd 密碼
@@ -68,11 +69,34 @@
          *
          * @return mixed
          */
-        public function insert($name, $email, $passwd)
+        public function register($group_no, $name, $email, $passwd)
         {
             $sql = "INSERT INTO member_info(group_no, member_nickname, email, passwd)
-                    VALUES ('1', '$name', '$email', '$passwd')";
+                    VALUES ('$group_no', '$name', '$email', '$passwd')";
             // $sql = "INSERT INTO message_board(name, content) value('$name', '$content')";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 1){
+                return false;
+            }else{
+                return $result;
+            }
+        }
+
+        /**
+         * 記錄群組
+         *
+         * @param string $group_no 群組碼
+         * @param string $name 名稱
+         *
+         * @var string $sql 新增群組
+         *
+         * @return mixed
+         */
+        public function group($group_no, $name)
+        {
+            $sql = "INSERT INTO group_code(group_no, group_cn)
+                    VALUES ('$group_no', '$name')";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
             if($result != 1){
@@ -104,6 +128,15 @@
             }
         }
 
+        /**
+         * 信箱驗證是否重複
+         *
+         * @param string $email 信箱
+         *
+         * @var string $sql 查找帳號
+         *
+         * @return bool
+         */
         public function emailCheck($email)
         {
             $sql = "SELECT 'email' FROM member_info WHERE email='$email'";
@@ -114,6 +147,58 @@
             }else{
                 return true;
             }
+        }
+
+        /**
+         * 產生群組亂碼
+         *
+         * @param string $length 長度
+         *
+         * @var string $str 亂碼字典
+         *
+         * @return string $random_str
+         */
+        public function randomstr($length=5)
+        {
+            $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            $random_str = substr(str_shuffle($str), 0, $length);
+            return $random_str;
+        }
+
+        /**
+         * 檢查群組亂碼是否重複
+         *
+         * @param string $group_no 群組亂碼
+         *
+         * @var string $sql 查詢亂碼
+         * @var mysqli_result|bool $result 查詢結果
+         *
+         * @return bool
+         */
+        public function randomstrCheck($group_no)
+        {
+            $sql =  "SELECT 'group_no' FROM member_info WHERE group_no='$group_no'";
+            $result = mysqli_query($this->connect, $sql);
+            if($result->num_rows > 0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        /**
+         * 取得單位資料
+         *
+         * @var string $sql 查詢資料表中 unit_cn欄位的資料
+         *
+         * @return object
+         */
+        public function getunit()
+        {
+            $sql = 'SELECT unit_cn FROM unit_code';
+            $result = mysqli_query($this->connect, $sql);
+
+             return $result;
         }
 
         /**

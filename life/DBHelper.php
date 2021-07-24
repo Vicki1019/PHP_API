@@ -201,6 +201,20 @@
         }
 
         /**
+         * 取得分類資料
+         *
+         * @var string $sql 查詢資料表中 type_cn欄位的資料
+         *
+         * @return object
+         */
+        public function getkind()
+        {
+            $sql = 'SELECT type_cn FROM food_kind_code';
+            $result = mysqli_query($this->connect, $sql);
+            return $result;
+        }
+
+        /**
          * 解構子
          *
          * 關閉資料庫

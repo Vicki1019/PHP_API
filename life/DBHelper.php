@@ -197,8 +197,7 @@
         {
             $sql = 'SELECT unit_cn FROM unit_code';
             $result = mysqli_query($this->connect, $sql);
-
-             return $result;
+            return $result;
         }
 
         /**

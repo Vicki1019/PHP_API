@@ -11,5 +11,5 @@ while($row = $result->fetch_assoc()){
     $unitlist[$i]=$row['unit_cn'];
     $i++;
 }
-echo json_encode($unitlist);
+echo json_encode($unitlist, JSON_UNESCAPED_UNICODE);
 ?>

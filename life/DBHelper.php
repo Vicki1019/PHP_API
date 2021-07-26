@@ -12,7 +12,7 @@
         /** @var string $user 使用者名稱 */
         private $user = 'root';
         /** @var string $password 密碼 */
-        private $password = 'mysql1passwd';
+        private $password = '1qaz2wsX';
         /** @var string $db 資料庫名稱 */
         private $db = 'life';
         /** @var object $connect 資料庫連線 */
@@ -196,6 +196,20 @@
         public function getunit()
         {
             $sql = 'SELECT unit_cn FROM unit_code';
+            $result = mysqli_query($this->connect, $sql);
+            return $result;
+        }
+
+        /**
+         * 取得分類資料
+         *
+         * @var string $sql 查詢資料表中 type_cn欄位的資料
+         *
+         * @return object
+         */
+        public function getkind()
+        {
+            $sql = 'SELECT type_cn FROM food_kind_code';
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }

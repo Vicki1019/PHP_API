@@ -5,6 +5,13 @@ require_once 'validate.php';
 /** @var \DBHelper $dbHelper 存取與資料庫相關功能的物件 */
 $dbHelper = new DBHelper();
 
+//get使用者名字
+$con = mysqli_connect ( "localhost", "root", "1qaz2wsX" ); 
+$sql = "SELECT nickname FROM member_info";
+$result = mysqli_query($con, $sql);
+printf($row ["nickname"]);
+
+
 if (isset($_POST["action"]) && $_POST["action"] == 'update') {
 
      $newName = $_POST['member_nickname'];

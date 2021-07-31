@@ -29,8 +29,8 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
 //}
 
 //修改密碼 
+$sql_n = "SELECT 'passwd' FROM member_info WHERE email='$email'";
 $newpw = $_POST['passwd'];
-$newpw2 = $_POST['passwd2'];
 //if (isset($_POST["action"]) && $_POST["action"] == 'update') 
 //{
 
@@ -38,10 +38,6 @@ $newpw2 = $_POST['passwd2'];
     if ($oldpassword != $dbpassword) 
     { 
         print("密碼錯誤"); 
-    }
-    if ($newpw != $newpw2) 
-    { 
-        print("新密碼錯誤"); 
     }
     else
     {

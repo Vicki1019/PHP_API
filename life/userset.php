@@ -1,24 +1,12 @@
 <?php
-//require_once 'DBHelper.php';
-//require_once 'validate.php';
+require_once 'DBHelper.php';
+require_once 'validate.php';
 
 /** @var \DBHelper $dbHelper 存取與資料庫相關功能的物件 */
 $dbHelper = new DBHelper();
 
 //get使用者名字
-$con = mysqli_connect ( "localhost", "root", "1qaz2wsX" ); 
-$sql = "SELECT 'member_nickname' FROM member_info WHERE email='$email'";
-//$result = mysqli_query($con, $sql);
-mysqli_query($this->connect, $sql);
-$result = $this->connect->affected_rows;
-if($result != 1)
-{
-     return false;
-}
-else
-{
-      return $result;
-}
+//$sql = "SELECT 'member_nickname' FROM member_info WHERE email='$email'";
 
 
 //修改使用者名字
@@ -26,7 +14,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update') {
 
      $newName = $_POST['member_nickname'];
      
-     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' WHERE email ='$email'";
+     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
      mysqli_query($db_link,$sql_query);
      if (mysqli_affected_rows($link)>0) 
      {

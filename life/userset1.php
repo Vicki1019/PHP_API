@@ -7,8 +7,8 @@ $dbHelper = new DBHelper();
 
 //修改暱稱
 $newName = $_POST['member_nickname'];
-//if (isset($_POST["action"]) && $_POST["action"] == 'update') 
-//{
+if (isset($_POST["action"]) && $_POST["action"] == 'update') 
+{
     
     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
     //mysqli_query($db_link,$sql_query);
@@ -24,7 +24,7 @@ $newName = $_POST['member_nickname'];
     {
          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
     }*/
-//}
+}
 
 
 //修改密碼 

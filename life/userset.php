@@ -17,18 +17,19 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update') {
      $newName = $_POST['member_nickname'];
      
      $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
+     echo "$newName";
      mysqli_query($db_link,$sql_query);
-     if (mysqli_affected_rows($newName)>0) 
+     if (mysqli_affected_rows($link)>0) 
      {
           echo "資料已更新";
      }
-     elseif(mysqli_affected_rows($newName)==0) 
+     elseif(mysqli_affected_rows($link)==0) 
      {
           echo "無資料更新";
      }
      else 
      {
-          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($newName);
+          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
      }
      $db_link->close();
 

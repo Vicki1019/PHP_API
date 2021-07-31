@@ -6,10 +6,9 @@ require_once 'validate.php';
 $dbHelper = new DBHelper();
 
 //修改暱稱
-$newName = $_POST['member_nickname'];
-if (isset($_POST["action"]) && $_POST["action"] == 'update') 
+if (isset($_POST["account_name"]) ) 
 {
-    
+    $newName = $_POST['account_name'];
     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
     //mysqli_query($db_link,$sql_query);
     /*if (mysqli_affected_rows($link)>0) 

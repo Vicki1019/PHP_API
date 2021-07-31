@@ -27,12 +27,12 @@ if (isset($_POST["account_name"]) )
 
 
 //修改密碼 
-/*if (isset($_POST["passwd"]) && $_POST["passwd"] == 'update') 
+if (isset($_POST["oldpwd"]) && $_POST["newpwd"] == 'update') 
 {
     $email = "SELECT 'email' FROM member_info";
     $dbpw = "SELECT 'passwd' FROM member_info";
-    $oldpw = $_POST['passwd'];
-    $newpw = $_POST['passwd'];
+    $oldpw = $_POST['oldpwd'];
+    $newpw = $_POST['newpwd'];
     if ($oldpw != $dbpw) 
     { 
         print("密碼錯誤"); 
@@ -54,6 +54,5 @@ if (isset($_POST["account_name"]) )
             echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
         }
     }
-    //$db_link->close();
-}*/
+}
 ?> 

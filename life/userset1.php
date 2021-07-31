@@ -28,12 +28,12 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
 
 
 //修改密碼 
-$email = "SELECT 'email' FROM member_info";
-$dbpw = "SELECT 'passwd' FROM member_info";
-$oldpw = $_POST['passwd'];
-$newpw = $_POST['passwd'];
 if (isset($_POST["action"]) && $_POST["action"] == 'update') 
 {
+    $email = "SELECT 'email' FROM member_info";
+    $dbpw = "SELECT 'passwd' FROM member_info";
+    $oldpw = $_POST['passwd'];
+    $newpw = $_POST['passwd'];
     if ($oldpw != $dbpw) 
     { 
         print("密碼錯誤"); 

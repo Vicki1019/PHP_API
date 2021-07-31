@@ -17,7 +17,6 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update') {
      $newName = $_POST['member_nickname'];
      
      $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
-     echo "$newName";
      mysqli_query($db_link,$sql_query);
      if (mysqli_affected_rows($link)>0) 
      {

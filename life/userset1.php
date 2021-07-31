@@ -4,12 +4,11 @@ require_once 'validate.php';
 
 /** @var \DBHelper $dbHelper 存取與資料庫相關功能的物件 */
 $dbHelper = new DBHelper();
-
+/*
 //修改暱稱
+$newName = $_POST['member_nickname'];
 if (isset($_POST["action"]) && $_POST["action"] == 'update') 
 {
-
-    $newName = $_POST['member_nickname'];
     
     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
     mysqli_query($db_link,$sql_query);
@@ -25,18 +24,16 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
     {
          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
     }
-    $db_link->close();
-}
-/*
+}*/
+
+
 //修改密碼 
 $email = "SELECT 'email' FROM member_info";
 $dbpw = "SELECT 'passwd' FROM member_info";
-$oldpw = $_REQUEST['passwd'];
-$newpw = $_REQUEST['passwd'];
+$oldpw = $_POST['passwd'];
+$newpw = $_POST['passwd'];
 //if (isset($_POST["action"]) && $_POST["action"] == 'update') 
 //{
-
-    //$newpw = $_POST['passwd'];
     if ($oldpw != $dbpw) 
     { 
         print("密碼錯誤"); 
@@ -59,5 +56,5 @@ $newpw = $_REQUEST['passwd'];
         }
     }
     //$db_link->close();
-//}*/
+//}
 ?> 

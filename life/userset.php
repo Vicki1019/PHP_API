@@ -6,7 +6,7 @@ require_once 'validate.php';
 $dbHelper = new DBHelper();
 
 //get使用者名字
-//$sql = "SELECT 'member_nickname' FROM member_info WHERE email='$email'";
+$sql = "SELECT 'member_nickname' FROM member_info WHERE email='$email'";
 
 
 //修改使用者名字

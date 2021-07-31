@@ -7,8 +7,9 @@ $dbHelper = new DBHelper();
 
 //get使用者名字
 $sql = "SELECT 'member_nickname' FROM member_info WHERE email='$email'";
+echo($sql);
 
-
+/*
 //修改使用者名字
 if (isset($_POST["action"]) && $_POST["action"] == 'update') {
 
@@ -31,5 +32,5 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update') {
      $db_link->close();
 
      //header('Location: index.php');
-}
+}*/
 ?>

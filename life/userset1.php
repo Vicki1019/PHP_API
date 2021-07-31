@@ -29,7 +29,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
 }
 
 //修改密碼 
-if (isset($_POST["action"]) && $_POST["action"] == 'update') 
+/*if (isset($_POST["action"]) && $_POST["action"] == 'update') 
 {
 
     $newpw = $_POST['passwd'];
@@ -40,7 +40,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
     
     $sql = "UPDATE 'member_info' SET 'passwd' = '$newpw' ";
     mysqli_query($db_link,$sql_query);
-    /*if (mysqli_affected_rows($link)>0) 
+    if (mysqli_affected_rows($link)>0) 
     {
          echo "資料已更新";
     }
@@ -51,7 +51,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
     else 
     {
          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
-    }*/
+    }
     $db_link->close();
-}
+}*/
 ?> 

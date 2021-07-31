@@ -29,6 +29,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
 //}
 
 //修改密碼 
+$email = "SELECT 'email' FROM member_info";
 $sql_n = "SELECT 'passwd' FROM member_info WHERE email='$email'";
 $newpw = $_POST['passwd'];
 //if (isset($_POST["action"]) && $_POST["action"] == 'update') 

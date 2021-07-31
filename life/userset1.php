@@ -32,8 +32,8 @@ $email = "SELECT 'email' FROM member_info";
 $dbpw = "SELECT 'passwd' FROM member_info";
 $oldpw = $_POST['passwd'];
 $newpw = $_POST['passwd'];
-//if (isset($_POST["action"]) && $_POST["action"] == 'update') 
-//{
+if (isset($_POST["action"]) && $_POST["action"] == 'update') 
+{
     if ($oldpw != $dbpw) 
     { 
         print("密碼錯誤"); 
@@ -56,5 +56,5 @@ $newpw = $_POST['passwd'];
         }
     }
     //$db_link->close();
-//}
+}
 ?> 

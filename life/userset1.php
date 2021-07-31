@@ -28,7 +28,7 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
 
 
 //修改密碼 
-if (isset($_POST["action"]) && $_POST["action"] == 'update') 
+if (isset($_POST["passwd"]) && $_POST["passwd"] == 'update') 
 {
     $email = "SELECT 'email' FROM member_info";
     $dbpw = "SELECT 'passwd' FROM member_info";
@@ -55,6 +55,6 @@ if (isset($_POST["action"]) && $_POST["action"] == 'update')
             echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
         }
     }
-    $db_link->close();
+    //$db_link->close();
 }
 ?> 

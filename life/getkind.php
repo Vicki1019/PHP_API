@@ -5,12 +5,10 @@ require_once 'DBHelper.php';
 $dbHelper = new DBHelper();
 
 $result = $dbHelper->getkind();
-$typelist = array();
-$i=0;
-while($row = $result->fetch_assoc()){
-    $typelist[$i]=$row;
-    $i++;
+$kindlist['kind'] = array();
+while($row = $result->fetch_array()){
+    array_push($kindlist['kind'],array('type_cn'=>$row['type_cn']));
 }
 
-echo json_encode($typelist, JSON_UNESCAPED_UNICODE);
+echo json_encode($kindlist, JSON_UNESCAPED_UNICODE);
 ?>

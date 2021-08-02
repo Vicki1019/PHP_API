@@ -8,7 +8,7 @@ $result = $dbHelper->getkind();
 $typelist = array();
 $i=0;
 while($row = $result->fetch_assoc()){
-    $typelist[$i]=$row['type_cn'];
+    $typelist[$i]=$row;
     $i++;
 }
 

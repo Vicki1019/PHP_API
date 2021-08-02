@@ -56,5 +56,5 @@ if (isset($_POST['oldpwd']) && isset($_POST['newpwd']) == 'update')
     }
 }
 
-mysqli_close($this);
+$this->connect->close();
 ?> 

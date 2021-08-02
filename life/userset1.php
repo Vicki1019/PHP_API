@@ -6,7 +6,7 @@ require_once 'validate.php';
 $dbHelper = new DBHelper();
 
 //修改暱稱
-if (isset($_POST["account_name"]) ) 
+if (isset($_POST['account_name']) ) 
 {
     $newName = $_POST['account_name'];
     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
@@ -27,8 +27,6 @@ if (isset($_POST["account_name"]) )
 
 
 //修改密碼 
-//if(isset($_POST['email']) && isset($_POST['passwd'])){
-
 if (isset($_POST['oldpwd']) && isset($_POST['newpwd']) == 'update') 
 {
     $email = "SELECT 'email' FROM member_info";
@@ -57,4 +55,6 @@ if (isset($_POST['oldpwd']) && isset($_POST['newpwd']) == 'update')
         }
     }
 }
+
+mysqli_close($link);
 ?> 

@@ -27,7 +27,7 @@ if (isset($_POST["account_name"]) )
 
 
 //修改密碼 
-if (isset($_POST["oldpwd"]) && $_POST["newpwd"] == 'update') 
+if (isset($_POST["oldpwd"]) && isset($_POST["newpwd"])) 
 {
     $email = "SELECT 'email' FROM member_info";
     $dbpw = "SELECT 'passwd' FROM member_info";

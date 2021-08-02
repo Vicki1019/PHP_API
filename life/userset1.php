@@ -10,8 +10,8 @@ if (isset($_POST["account_name"]) )
 {
     $newName = $_POST['account_name'];
     $sql = "UPDATE 'member_info' SET 'member_nickname' = '$newName' ";
-    //mysqli_query($db_link,$sql_query);
-    /*if (mysqli_affected_rows($link)>0) 
+    mysqli_query($db_link,$sql_query);
+    if (mysqli_affected_rows($link)>0) 
     {
          echo "資料已更新";
     }
@@ -22,13 +22,12 @@ if (isset($_POST["account_name"]) )
     else 
     {
          echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
-    }*/
+    }
 }
 
 
 //修改密碼 
-//if (isset($_POST["oldpwd"]) && $_POST["newpwd"] == 'update') 
-if (isset($_POST["oldpwd"]) && $_POST["newpwd"]) 
+if (isset($_POST["oldpwd"]) && $_POST["newpwd"] == 'update') 
 {
     $email = "SELECT 'email' FROM member_info";
     $dbpw = "SELECT 'passwd' FROM member_info";

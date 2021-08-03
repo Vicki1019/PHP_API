@@ -10,5 +10,5 @@ while($row = $result->fetch_array()){
     array_push($kindlist['kind'],array('type_cn'=>$row['type_cn']));
 }
 
-echo json_encode($kindlist, JSON_UNESCAPED_UNICODE);
+print json_encode($kindlist, JSON_UNESCAPED_UNICODE);
 ?>

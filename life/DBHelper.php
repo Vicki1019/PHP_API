@@ -118,7 +118,7 @@
          */
         public function login($email, $passwd)
         {
-            $sql = "SELECT 'name', 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
+            $sql = "SELECT 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
             if($result != 1){
@@ -213,6 +213,22 @@
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }
+
+        /**
+         * 取得使用者資料
+         * 
+         * @var string $sql 查詢使用者資料
+         * 
+         * @param string $email 信箱
+         * 
+         * @return object
+         */
+        public function getuserinfo($email){
+            $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email";
+            $result = mysqli_query($this->connect, $sql);
+            return $result;
+        }
+
 
         /**
          * 解構子

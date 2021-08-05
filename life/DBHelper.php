@@ -224,7 +224,7 @@
          * @return object
          */
         public function getuserinfo($email){
-            $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email";
+            $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email'";
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }

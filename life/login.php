@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'DBHelper.php';
 require_once 'validate.php';
 
@@ -16,7 +15,6 @@ if(isset($_POST['email']) && isset($_POST['passwd'])){
     $result = $dbHelper->login($email, $passwd);
     if ($result == 1) {
         $_SESSION['email'] = $email;
-        //echo $_SESSION['email'];
         print("success");
     } else {
         print("failure");

@@ -223,7 +223,7 @@
          * 
          * @return object
          */
-        public function getuserinfo($email){
+        public function usercheck($email){
             $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email'";
             $result = mysqli_query($this->connect, $sql);
             return $result;

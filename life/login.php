@@ -14,7 +14,6 @@ if(isset($_POST['email']) && isset($_POST['passwd'])){
 
     $result = $dbHelper->login($email, $passwd);
     if ($result == 1) {
-        $_SESSION['email'] = $email;
         print("success");
     } else {
         print("failure");

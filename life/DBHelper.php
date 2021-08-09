@@ -12,11 +12,8 @@
         /** @var string $user 使用者名稱 */
         private $user = 'root';
         /** @var string $password 密碼 */
-<<<<<<< HEAD
-        private $password = 'tp6vup4cj/6';
-=======
-        private $password = 'mysql1passwd';
->>>>>>> origin/main
+        // private $password = 'tp6vup4cj/6';
+        // private $password = 'mysql1passwd';
         /** @var string $db 資料庫名稱 */
         private $db = 'life';
         /** @var object $connect 資料庫連線 */

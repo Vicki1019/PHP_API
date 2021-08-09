@@ -5,11 +5,9 @@ require_once 'DBHelper.php';
 $dbHelper = new DBHelper();
 
 $result = $dbHelper->getunit();
-$unitlist = array();
-$i=0;
-while($row = $result->fetch_assoc()){
-    $unitlist[$i]=$row['unit_cn'];
-    $i++;
+$unitlist['unit'] = array();
+while($row = $result->fetch_array()){
+    array_push($unitlist['unit'],array('unit_cn'=>$row['unit_cn']));
 }
 
 echo json_encode($unitlist, JSON_UNESCAPED_UNICODE);

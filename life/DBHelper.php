@@ -12,7 +12,11 @@
         /** @var string $user 使用者名稱 */
         private $user = 'root';
         /** @var string $password 密碼 */
+<<<<<<< HEAD
         private $password = 'tp6vup4cj/6';
+=======
+        private $password = 'mysql1passwd';
+>>>>>>> origin/main
         /** @var string $db 資料庫名稱 */
         private $db = 'life';
         /** @var object $connect 資料庫連線 */
@@ -118,7 +122,7 @@
          */
         public function login($email, $passwd)
         {
-            $sql = "SELECT 'name', 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
+            $sql = "SELECT 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
             mysqli_query($this->connect, $sql);
             $result = $this->connect->affected_rows;
             if($result != 1){
@@ -295,6 +299,19 @@
                 }
             }
         }
+         * 
+         * @var string $sql 查詢使用者資料
+         * 
+         * @param string $email 信箱
+         * 
+         * @return object
+         */
+        public function usercheck($email){
+            $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email'";
+            $result = mysqli_query($this->connect, $sql);
+            return $result;
+        }
+
 
         /**
          * 解構子

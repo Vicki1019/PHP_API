@@ -9,7 +9,8 @@ if(isset($_POST['email']) && isset($_POST['passwd'])){
 
     $email = validate($_POST['email']);
     $passwd = validate($_POST['passwd']);
-    $sql = "SELECT * FROM member_info WHERE email='$email' AND passwd='$passwd'";
+
+    //$sql = "SELECT * FROM member_info WHERE email='$email' AND passwd='$passwd'";
 
     $result = $dbHelper->login($email, $passwd);
     if ($result == 1) {

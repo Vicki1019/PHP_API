@@ -118,10 +118,9 @@
          */
         public function login($email, $passwd)
         {
-            $sql = "SELECT 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
-            mysqli_query($this->connect, $sql);
-            $result = $this->connect->affected_rows;
-            if($result != 1){
+            $sql = "SELECT member_nickname, email, passwd FROM member_info WHERE email='$email' AND passwd='$passwd'";
+            $result = mysqli_query($this->connect, $sql);
+            if($result->num_rows != 1){
                 return false;
             }else{
                 return $result;

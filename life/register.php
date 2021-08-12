@@ -5,12 +5,12 @@ require_once 'validate.php';
 /** @var \DBHelper $dbHelper 存取與資料庫相關功能的物件 */
 $dbHelper = new DBHelper();
 
-if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd']) && isset($_POST['passwdck'])) {
+if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['passwd'])) {
 
     $name = validate($_POST['name']);
     $email = validate($_POST['email']);
     $passwd = validate($_POST['passwd']);
-    $passwdck = validate($_POST['passwdck']);
+    //$passwdck = validate($_POST['passwdck']);
     $group_no = $dbHelper->randomstr(5);
     $randomstrCheck = $dbHelper->randomstrCheck($group_no);
    /* print($group_no . " ");

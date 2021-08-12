@@ -216,9 +216,8 @@
         /**
          * 修改使用者暱稱
          * 
-         * @var string $sql 查詢使用者資料
-         * 
          * @param string $name 暱稱
+         * @param string $email 信箱
          * 
          * @return object
          */
@@ -233,6 +232,25 @@
             }
         }
 
+        /**
+         * 修改使用者密碼
+         * 
+         * @param string $email 信箱
+         * @param string $passwd 原密碼
+         * @param string $newpassed 新密碼
+         * 
+         * @return object
+         */
+        public function updatepass($email, $passwd, $newpasswd){
+            $sql = "UPDATE member_info SET passwd='$newpasswd' WHERE email='$email' AND passwd='$passwd'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return $result;
+            }else{
+                return false;
+            }
+        }
 
         /**
          * 解構子

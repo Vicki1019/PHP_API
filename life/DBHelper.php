@@ -214,18 +214,23 @@
         }
 
         /**
-         * 取得使用者資料
+         * 修改使用者暱稱
          * 
          * @var string $sql 查詢使用者資料
          * 
-         * @param string $email 信箱
+         * @param string $name 暱稱
          * 
          * @return object
          */
-        public function usercheck($email){
-            $sql = "SELECT member_nickname, email FROM member_info WHERE email='$email'";
-            $result = mysqli_query($this->connect, $sql);
-            return $result;
+        public function updatename($name, $email){
+            $sql = "UPDATE member_info SET member_nickname='$name' WHERE email='$email'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return $result;
+            }else{
+                return false;
+            }
         }
 
 

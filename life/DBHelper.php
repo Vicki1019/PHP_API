@@ -192,9 +192,10 @@
          *
          * @return object
          */
-        public function getunit()
+        public function getunit($email)
         {
-            $sql = 'SELECT unit_cn FROM unit_code';
+            $sql = "SELECT unit_cn, unit_code.member_no FROM unit_code WHERE unit_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email='$email')
+            OR unit_code.member_no = '0'";
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }
@@ -206,9 +207,9 @@
          *
          * @return object
          */
-        public function getkind()
+        public function getkind($email)
         {
-            $sql = 'SELECT type_cn FROM food_kind_code';
+            $sql = "SELECT type_cn FROM food_kind_code WHERE (SELECT member_no FROM member_info WHERE email='$email')";
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }

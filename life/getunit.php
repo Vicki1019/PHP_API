@@ -13,6 +13,6 @@ if(isset($_POST['email'])){
         array_push($unitlist['unit'],array('unit_cn'=>$row['unit_cn']));
     }
     
-    echo json_encode($unitlist, JSON_UNESCAPED_UNICODE);
+    print json_encode($unitlist, JSON_UNESCAPED_UNICODE);
 }
 ?>

@@ -12,8 +12,9 @@ class Login_model extends CI_Model
     /**
      * 登入系統
      *
-     * @param string $email 信箱
-     * @param string $passwd 密碼
+     * @param object $params
+     * @param string $params->email 信箱
+     * @param string $params->passwd 密碼
      *
      * @var string $sql 查找帳號
      *
@@ -95,10 +96,11 @@ class Login_model extends CI_Model
     /**
      * 註冊帳號
      *
-     * @param string $group_no 群組編號
-     * @param string $name 暱稱
-     * @param string $email 信箱
-     * @param string $passwd 密碼
+     * @param object $params
+     * @param string $params->group_no 群組編號
+     * @param string $params->name 暱稱
+     * @param string $params->email 信箱
+     * @param string $params->passwd 密碼
      *
      * @var string $sql 新增使用者到資料表中
      *

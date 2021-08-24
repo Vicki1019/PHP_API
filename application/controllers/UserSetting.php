@@ -19,11 +19,22 @@ class UserSetting extends CI_Controller
         $this->output->set_output(json_encode($user, JSON_UNESCAPED_UNICODE));
     }
 
-    public function updateNickname()
+    public function updatename()
     {
         $email = $this->input->post('email');
-        $newName = $this->input->post('nickname');
-        if(empty($email)||empty($newName))
+        $newName = $this->input->post('newName');
+        $params = (object)[
+            'newName' => $newName,
+            'email' => $email
+        ];
+        $result = $this->UserSetting_model->updatename($params);
+        if($result > 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+
+       /* if(empty($email)||empty($newName))
         {
             print("email or nickname can not be empty");
         } else {
@@ -37,15 +48,26 @@ class UserSetting extends CI_Controller
             } else {
                 print("update failed");
             }
-        }
+        }*/
     }
 
-    public function updatePassword()
+    public function updatepass()
     {
         $email = $this->input->post('email');
-        $oldpwd = $this->input->post('oldpwd');
-        $newpwd = $this->input->post('newpwd');
-        if(empty($_POST["oldpwd"]) || empty($_POST["newpwd"]))
+        $passwd = $this->input->post('passwd');
+        $newpasswd = $this->input->post('newpasswd');
+        $params = (object)[
+            'email' => $email,
+            'passwd' => $passwd,
+            'newpasswd' => $newpasswd
+        ];
+        $result = $this->UserSetting_model->updatepass($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+        /*if(empty($_POST["oldpwd"]) || empty($_POST["newpwd"]))
         {
             print("old password or new password can not be empty");
         } else {
@@ -62,6 +84,6 @@ class UserSetting extends CI_Controller
             } else {
                     print("update failed");
             }
-        }
+        }*/
     }
 }

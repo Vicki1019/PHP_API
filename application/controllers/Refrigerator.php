@@ -12,14 +12,22 @@ class Refrigerator extends CI_Controller
 
     public function getUnit()
     {
-        $unitlist['unit'] = $this->Refrigerator_model->getunit();
+        $email = $this->input->post('email');
+        $params = (object)[
+            'email' => $email
+        ];
+        $unitlist['unit'] = $this->Refrigerator_model->getunit($params);
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($unitlist, JSON_UNESCAPED_UNICODE));
     }
 
     public function getKind()
     {
-        $kindlist['kind'] = $this->Refrigerator_model->getkind();
+        $email = $this->input->post('email');
+        $params = (object)[
+            'email' => $email
+        ];
+        $kindlist['kind'] = $this->Refrigerator_model->getkind($params);
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($kindlist, JSON_UNESCAPED_UNICODE));
     }

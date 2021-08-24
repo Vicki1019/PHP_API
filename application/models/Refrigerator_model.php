@@ -16,11 +16,19 @@ class Refrigerator_model extends CI_Model
      *
      * @return object
      */
-    public function getunit()
+    public function getunit($params)
     {
-        $sql = 'SELECT unit_cn FROM unit_code';
-        $query = $this->db->query($sql);
-        return $query->result_array();
+        $sql = "SELECT unit_cn FROM unit_code 
+        WHERE unit_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email=?) 
+        OR unit_code.member_no = '0'";
+        $query = $this->db->query($sql, [
+            $params->email
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -30,10 +38,18 @@ class Refrigerator_model extends CI_Model
      *
      * @return object
      */
-    public function getkind()
+    public function getkind($params)
     {
-        $sql = 'SELECT type_cn FROM food_kind_code';
-        $query = $this->db->query($sql);
-        return $query->result_array();
+        $sql = "SELECT type_cn FROM food_kind_code 
+        WHERE food_kind_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email=?) 
+        OR food_kind_code.member_no = '0'";
+        $query = $this->db->query($sql, [
+            $params->email
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
     }
 }

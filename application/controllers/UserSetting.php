@@ -90,15 +90,23 @@ class UserSetting extends CI_Controller
     public function addtype(){
         $newtype = $this->input->post('newtype');
         $email = $this->input->post('email');
+        $member_no = $this->UserSetting_model->getmemberno($email);
+        $group_no = $this->UserSetting_model->getgroupno($email);
         $params = (object)[
             'newtype' => $newtype,
-            'email' => $email
+            'memberno' => $member_no,
+            'groupno' => $group_no
         ];
-        $result = $this->UserSetting_model->addtype($params);
-        if($result != 0){
-            print "success";
+        $typecheck = $this->UserSetting_model->typecheck($params);
+        if($typecheck != true){
+            print "repetition";
         }else{
-            print "failure";
+            $result = $this->UserSetting_model->addtype($params);
+            if($result != 0){
+                print "success";
+            }else{
+                print "failure";
+            }
         }
     }
 }

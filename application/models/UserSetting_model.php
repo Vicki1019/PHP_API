@@ -122,6 +122,73 @@ class UserSetting_model extends CI_Model
     }
 
     /**
+     * 取得使用者編號
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得使用者編號
+     *
+     * @return bool|string
+     */
+    public function getmemberno($email)
+    {
+        $sql = "SELECT member_no FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得群組編號
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得群組編號
+     *
+     * @return bool|string
+     */
+    public function getgroupno($email)
+    {
+        $sql = "SELECT group_no FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 檢查分類是否重複
+     *
+     * @param object $params
+     * @param string $params->memberno 使用者編號
+     * @param string $params->newtype 新分類
+     *
+     * @var string $sql 檢查分類是否重複
+     *
+     * @return bool|string
+     */
+    public function typecheck($params)
+    {
+        $sql = "SELECT member_no, type_cn FROM food_kind_code WHERE member_no=? AND type_cn=?";
+        $query = $this->db->query($sql, [
+            $params->memberno,
+            $params->newtype
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * 新增分類項目
      *
      * @param object $params
@@ -133,10 +200,11 @@ class UserSetting_model extends CI_Model
      */
     public function addtype($params)
     {
-        $sql = "INSERT TO food_kind_code (type_cn, member_no, group_no) VALUE (?,?,?) ";
+        $sql = "INSERT INTO food_kind_code (type_cn, member_no, group_no) VALUE (?,?,?)";
         $query = $this->db->query($sql, [
-            $params->newtype
-            $params->email,
+            $params->newtype,
+            $params->memberno,
+            $params->groupno
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;

@@ -114,7 +114,7 @@ class Login_model extends CI_Model
             $params->group_no,
             $params->name,
             $params->email,
-            $params->passwd,
+            $params->passwd
         ]);
 
         if ($this->db->affected_rows() > 0) {

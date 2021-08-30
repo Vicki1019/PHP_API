@@ -120,4 +120,29 @@ class UserSetting_model extends CI_Model
             }
         }*/
     }
+
+    /**
+     * 新增分類項目
+     *
+     * @param object $params
+     * @param string $params->newtype 新分類
+     *
+     * @var string $sql 新增分類項目
+     *
+     * @return bool|string
+     */
+    public function addtype($params)
+    {
+        $sql = "INSERT TO food_kind_code (type_cn, member_no, group_no) VALUE (?,?,?) ";
+        $query = $this->db->query($sql, [
+            $params->newtype
+            $params->email,
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }

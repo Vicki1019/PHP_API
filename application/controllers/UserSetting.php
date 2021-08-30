@@ -86,4 +86,19 @@ class UserSetting extends CI_Controller
             }
         }*/
     }
+
+    public function addtype(){
+        $newtype = $this->input->post('newtype');
+        $email = $this->input->post('email');
+        $params = (object)[
+            'newtype' => $newtype,
+            'email' => $email
+        ];
+        $result = $this->UserSetting_model->addtype($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
 }

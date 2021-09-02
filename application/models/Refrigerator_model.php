@@ -52,4 +52,22 @@ class Refrigerator_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 取得存放位置資料
+     *
+     * @var string $sql 查詢資料表中 locate_cn欄位的資料
+     *
+     * @return object
+     */
+    public function getlocate()
+    {
+        $sql = "SELECT locate_cn FROM locate_code";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }

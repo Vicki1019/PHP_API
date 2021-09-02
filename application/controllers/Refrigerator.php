@@ -31,4 +31,11 @@ class Refrigerator extends CI_Controller
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($kindlist, JSON_UNESCAPED_UNICODE));
     }
+
+    public function getlocate()
+    {
+        $locatelist['locate'] = $this->Refrigerator_model->getlocate();
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($locatelist, JSON_UNESCAPED_UNICODE));
+    }
 }

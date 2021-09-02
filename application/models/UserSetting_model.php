@@ -211,6 +211,28 @@ class UserSetting_model extends CI_Model
         } else {
             return false;
         }
+    }
 
+    /**
+     * 刪除分類項目
+     *
+     * @param object $params
+     * @param string $params->type 分類
+     *
+     * @var string $sql 刪除分類項目
+     *
+     * @return bool|string
+     */
+    public function deletetype($params)
+    {
+        $sql = "";
+        $query = $this->db->query($sql, [
+           
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

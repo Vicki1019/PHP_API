@@ -12,7 +12,9 @@
         /** @var string $user 使用者名稱 */
         private $user = 'root';
         /** @var string $password 密碼 */
-        private $password = '1qaz2wsX';
+        p//rivate $password = '1qaz2wsX';
+        //private $password = 'tp6vup4cj/6';
+        private $password = 'mysql1passwd';
         /** @var string $db 資料庫名稱 */
         private $db = 'life';
         /** @var object $connect 資料庫連線 */
@@ -118,10 +120,9 @@
          */
         public function login($email, $passwd)
         {
-            $sql = "SELECT 'name', 'email' FROM member_info WHERE email='$email' AND passwd='$passwd'";
-            mysqli_query($this->connect, $sql);
-            $result = $this->connect->affected_rows;
-            if($result != 1){
+            $sql = "SELECT member_nickname, email, passwd FROM member_info WHERE email='$email' AND passwd='$passwd'";
+            $result = mysqli_query($this->connect, $sql);
+            if($result->num_rows != 1){
                 return false;
             }else{
                 return $result;
@@ -193,9 +194,11 @@
          *
          * @return object
          */
-        public function getunit()
+        public function getunit($email)
         {
-            $sql = 'SELECT unit_cn FROM unit_code';
+            $sql = "SELECT unit_cn FROM unit_code 
+                    WHERE unit_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email='$email') 
+                    OR unit_code.member_no = '0'";
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }
@@ -207,92 +210,53 @@
          *
          * @return object
          */
-        public function getkind()
+        public function getkind($email)
         {
-            $sql = 'SELECT type_cn FROM food_kind_code';
+            $sql = "SELECT type_cn FROM food_kind_code 
+                    WHERE food_kind_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email='$email') 
+                    OR food_kind_code.member_no = '0'";
             $result = mysqli_query($this->connect, $sql);
             return $result;
         }
 
-        /**
-         * 取得使用者資料
-         *
-         * @var string $sql 查詢資料表中 email欄位的資料
-         *
+        
+         /* 
+         * @var string $sql 查詢使用者資料
+         * 修改使用者暱稱
+         * 
+         * @param string $name 暱稱
+         * @param string $email 信箱
+         * 
          * @return object
          */
-        public function getEmail($email)
-        {
-            $sql = "SELECT email, member_nickname, passwd FROM member_info WHERE email='$email'";
-            $result = mysqli_query($this->connect, $sql);
-            $row = mysqli_fetch_object($result);
-            return $row;
-        }
-
-        /**
-         * 更新使用者暱稱
-         *
-         * @param string $email 信箱
-         * @param string $newName 新的暱稱
-         *
-         * @var string $sql 更新使用者暱稱
-         *
-         * @return bool
-         */
-        public function updateUserName($email, $newName)
-        {
-            // 先查找使用者的新暱稱是否與原先相同
-            $name = "SELECT member_nickname FROM member_info WHERE email='$email'";
-            $result = mysqli_query($this->connect, $name);
-            $row = mysqli_fetch_array($result);
-
-            //相同則直接回傳成功
-            if($newName == $row['member_nickname'])
-            {
-                return true;
-            } else {
-                $sql = "UPDATE member_info SET member_nickname='$newName' WHERE email='$email'";
-                mysqli_query($this->connect, $sql);
-                $result = $this->connect->affected_rows;
-                if($result != 0){
-                    return true;
-                }else{
-                    return false;
-                }
+        public function updatename($name, $email){
+            $sql = "UPDATE member_info SET member_nickname='$name' WHERE email='$email'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return $result;
+            }else{
+                return false;
             }
         }
 
         /**
-         * 更新使用者密碼
-         *
+         * 修改使用者密碼
+         * 
          * @param string $email 信箱
-         * @param string $oldpwd 舊密碼
-         * @param string $newpwd 新密碼
-         *
-         * @var string $sql 更新使用者密碼
-         *
-         * @return bool|string
+         * @param string $passwd 原密碼
+         * @param string $newpassed 新密碼
+         * 
+         * @return object
          */
-        public function updatePassword($email, $oldpwd, $newpwd)
-        {
-            // 先查找使用者的新密碼是否與原先相同
-            $name = "SELECT passwd FROM member_info WHERE email='$email'";
-            $result = mysqli_query($this->connect, $name);
-            $row = mysqli_fetch_array($result);
-
-            // 若不同則回傳舊密碼錯誤
-            if ($oldpwd != $row['passwd'])
-            {
-                return "old password failed";
-            } else {
-                $sql = "UPDATE member_info SET passwd='$newpwd' WHERE email='$email'";
-                mysqli_query($this->connect, $sql);
-                $result = $this->connect->affected_rows;
-                if($result != 0){
-                    return true;
-                }else{
-                    return "password update failed";
-                }
+        public function updatepass($email, $passwd, $newpasswd){
+            $sql = "UPDATE member_info SET passwd='$newpasswd' WHERE email='$email' AND passwd='$passwd'";
+            mysqli_query($this->connect, $sql);
+            $result = $this->connect->affected_rows;
+            if($result != 0){
+                return $result;
+            }else{
+                return false;
             }
         }
 

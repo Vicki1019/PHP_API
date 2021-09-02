@@ -10,6 +10,48 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得使用者編號
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得使用者編號
+     *
+     * @return bool|string
+     */
+    public function getmemberno($email)
+    {
+        $sql = "SELECT member_no FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得群組編號
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得群組編號
+     *
+     * @return bool|string
+     */
+    public function getgroupno($email)
+    {
+        $sql = "SELECT group_no FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取得單位資料
      *
      * @var string $sql 查詢資料表中 unit_cn欄位的資料
@@ -26,6 +68,24 @@ class Refrigerator_model extends CI_Model
         ]);
         if ($query->num_rows() > 0) {
             return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得單位編號
+     *
+     * @var string $sql 查詢資料表中 unit_no欄位的資料
+     *
+     * @return object
+     */
+    public function getunitno($unit)
+    {
+        $sql = "SELECT unit_no FROM unit_code WHERE unit_cn=?";
+        $query = $this->db->query($sql,$unit);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
         } else {
             return false;
         }
@@ -54,6 +114,24 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得分類編號
+     *
+     * @var string $sql 查詢資料表中 type1欄位的資料
+     *
+     * @return object
+     */
+    public function gettypeno($type)
+    {
+        $sql = "SELECT type1 FROM food_kind_code WHERE type_cn=?";
+        $query = $this->db->query($sql,$type);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取得存放位置資料
      *
      * @var string $sql 查詢資料表中 locate_cn欄位的資料
@@ -66,6 +144,62 @@ class Refrigerator_model extends CI_Model
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得存放位置編號
+     *
+     * @var string $sql 查詢資料表中 locate_no欄位的資料
+     *
+     * @return object
+     */
+    public function getlocateno($locate)
+    {
+        $sql = "SELECT locate_no FROM locate_code WHERE locate_cn=?";
+        $query = $this->db->query($sql,$locate);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 新增冰箱清單
+     *
+     * @param object $params
+     * @param string $params->memberno 使用者編號
+     * @param string $params->groupno 群組編號
+     * @param string $params->foodname 食品名稱
+     * @param string $params->quantity 數量
+     * @param string $params->unit 單位
+     * @param string $params->expdate 有效期限
+     * @param string $params->type 分類
+     * @param string $params->locate 存取位置
+     *
+     * @var string $sql 新增冰箱清單
+     *
+     * @return bool|string
+     */
+    public function refadd($params)
+    {
+        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, type1, locate_no, ck_date) VALUE (?,?,?,?,?,?,?,?,?)";
+        $query = $this->db->query($sql, [
+            $params->memberno,
+            $params->groupno,
+            $params->foodname,
+            $params->quantity,
+            $params->unitno,
+            $params->expdate,
+            $params->typeno,
+            $params->locateno,
+            $params->ckdate
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
         } else {
             return false;
         }

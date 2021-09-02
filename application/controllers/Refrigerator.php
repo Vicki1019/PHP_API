@@ -38,4 +38,40 @@ class Refrigerator extends CI_Controller
         $this->output->set_content_type('application/json');
         $this->output->set_output(json_encode($locatelist, JSON_UNESCAPED_UNICODE));
     }
+
+    public function refadd(){
+        $email = $this->input->post('email');
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $group_no = $this->Refrigerator_model->getgroupno($email);
+        $foodname = $this->input->post('foodname');
+        $quantity = $this->input->post('quantity');
+        $unit = $this->input->post('unit');
+        $unitno = $this->Refrigerator_model->getunitno($unit);
+        $expdate = $this->input->post('expdate');
+        $type = $this->input->post('type');
+        $typeno = $this->Refrigerator_model->gettypeno($type);
+        $locate = $this->input->post('locate');
+        $locateno = $this->Refrigerator_model->getlocateno($locate);
+        $ck_date = date("Y/n/j");
+        $params = (object)[
+            'memberno' => $member_no,
+            'groupno' => $group_no,
+            'foodname' => $foodname,
+            'quantity' => $quantity,
+            'unit' => $unit,
+            'unitno' => $unitno,
+            'expdate' => $expdate,
+            'type' => $type,
+            'typeno' => $typeno,
+            'locate' => $locate,
+            'locateno' => $locateno,
+            'ckdate' => $ck_date
+        ];
+        $result = $this->Refrigerator_model->refadd($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }    
+    }
 }

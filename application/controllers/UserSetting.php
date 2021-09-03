@@ -111,6 +111,18 @@ class UserSetting extends CI_Controller
     }
 
     public function deletetype(){
-        
+        $deletetype = $this->input->post('deletetype');
+        $email = $this->input->post('email');
+        $member_no = $this->UserSetting_model->getmemberno($email);
+        $params = (object)[
+            'deletetype' => $deletetype,
+            'memberno' => $member_no
+        ];
+        $result = $this->UserSetting_model->deletetype($params);
+            if($result != 0){
+                print "success";
+            }else{
+                print "failure";
+            }
     }
 }

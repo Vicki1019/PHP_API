@@ -217,7 +217,7 @@ class UserSetting_model extends CI_Model
      * 刪除分類項目
      *
      * @param object $params
-     * @param string $params->type 分類
+     * @param string $params->deletetype 欲刪除分類
      *
      * @var string $sql 刪除分類項目
      *
@@ -225,9 +225,10 @@ class UserSetting_model extends CI_Model
      */
     public function deletetype($params)
     {
-        $sql = "";
+        $sql = "DELETE FROM food_kind_code WHERE member_no=? AND type_cn=?";
         $query = $this->db->query($sql, [
-           
+           $params->memberno,
+           $params->deletetype
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;

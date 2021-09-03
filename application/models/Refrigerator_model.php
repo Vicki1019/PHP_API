@@ -186,7 +186,7 @@ class Refrigerator_model extends CI_Model
      */
     public function refadd($params)
     {
-        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, type1, locate_no, ck_date) VALUE (?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, type1, locate_no, ck_date) VALUE (?,?,?,?,?,?,?,?,?,?)";
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->groupno,
@@ -194,6 +194,7 @@ class Refrigerator_model extends CI_Model
             $params->quantity,
             $params->unitno,
             $params->expdate,
+            $params->alertdate,
             $params->typeno,
             $params->locateno,
             $params->ckdate

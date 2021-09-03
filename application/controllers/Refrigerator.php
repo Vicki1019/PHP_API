@@ -52,7 +52,8 @@ class Refrigerator extends CI_Controller
         $typeno = $this->Refrigerator_model->gettypeno($type);
         $locate = $this->input->post('locate');
         $locateno = $this->Refrigerator_model->getlocateno($locate);
-        $ck_date = date("Y/n/j");
+        $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day"));
+        $ck_date = date("Y/m/d H:i:s");
         $params = (object)[
             'memberno' => $member_no,
             'groupno' => $group_no,
@@ -65,6 +66,7 @@ class Refrigerator extends CI_Controller
             'typeno' => $typeno,
             'locate' => $locate,
             'locateno' => $locateno,
+            'alertdate' => $alert_date,
             'ckdate' => $ck_date
         ];
         $result = $this->Refrigerator_model->refadd($params);

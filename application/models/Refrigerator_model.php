@@ -237,7 +237,7 @@ class Refrigerator_model extends CI_Model
      */
     public function getreflist($params)
     {
-        $sql = "SELECT food_name, quantity, unit_code.unit_cn, exp_date, exp_state FROM refre_list, unit_code WHERE refre_list.member_no=? AND  refre_list.unit_no = unit_code.unit_no";
+        $sql = "SELECT food_name, quantity, unit_code.unit_cn, exp_date, exp_state FROM refre_list LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no WHERE refre_list.member_no=?";
         $query = $this->db->query($sql, [
             $params->memberno
         ]);

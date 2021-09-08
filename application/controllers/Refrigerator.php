@@ -54,6 +54,7 @@ class Refrigerator extends CI_Controller
         $locateno = $this->Refrigerator_model->getlocateno($locate);
         $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day"));
         $ck_date = date("Y/m/d H:i:s");
+        $exp_state = $this->Refrigerator_model->foodstate($expdate,$alert_date);
         $params = (object)[
             'memberno' => $member_no,
             'groupno' => $group_no,
@@ -67,7 +68,8 @@ class Refrigerator extends CI_Controller
             'locate' => $locate,
             'locateno' => $locateno,
             'alertdate' => $alert_date,
-            'ckdate' => $ck_date
+            'ckdate' => $ck_date,
+            'expstate' => $exp_state
         ];
         $result = $this->Refrigerator_model->refadd($params);
         if($result != 0){
@@ -75,5 +77,25 @@ class Refrigerator extends CI_Controller
         }else{
             print "failure";
         }    
+    }
+
+    public function getreflist(){
+        $email = $this->input->post('email');
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $params = (object)[
+            'memberno' => $member_no
+        ];
+        foreach ($result as $row => $v){
+            $reflist = [
+                'response' => 'success',
+                'food'=>$v['food_name'],
+                'quantity'=>$v['quantity'],
+                'unit'=>$v['unit_cn'],
+                'state'=>$v['expstate']
+            ];
+            $this->output->set_output(json_encode([
+                'reflist' => array($reflist)
+            ], JSON_UNESCAPED_UNICODE));
+        }
     }
 }

@@ -168,6 +168,24 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 食物狀態確認
+     *
+     * @var string $sql 檢查食品狀態
+     *
+     * @return object
+     */
+    public function foodstate($expdate,$alert_date)
+    {
+        if(strtotime($alert_date) == strtotime(date("Y/m/d"))){
+            return "-1"; //即將過期
+        }else if(strtotime($expdate)<=strtotime(date("Y/m/d H:i:s"))){
+            return "1"; //已過期
+        }else{
+            return "0"; //未過期
+        }
+    }
+
+    /**
      * 新增冰箱清單
      *
      * @param object $params
@@ -186,7 +204,7 @@ class Refrigerator_model extends CI_Model
      */
     public function refadd($params)
     {
-        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, type1, locate_no, ck_date) VALUE (?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, type1, locate_no, ck_date, exp_state) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->groupno,
@@ -197,10 +215,34 @@ class Refrigerator_model extends CI_Model
             $params->alertdate,
             $params->typeno,
             $params->locateno,
-            $params->ckdate
+            $params->ckdate,
+            $params->expstate
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得冰箱清單
+     *
+     * @param object $params
+     * @param string $params->member_no 信箱
+     *
+     * @var string $sql 取得冰箱清單
+     *
+     * @return mixed
+     */
+    public function getreflist($params)
+    {
+        $sql = "SELECT food_name, quantity, unit_code.unit_cn, exp_date, exp_state FROM refre_list, unit_code WHERE refre_list.member_no=? AND  refre_list.unit_no = unit_code.unit_no";
+        $query = $this->db->query($sql, [
+            $params->memberno
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
         } else {
             return false;
         }

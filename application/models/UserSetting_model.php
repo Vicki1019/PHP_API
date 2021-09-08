@@ -176,7 +176,7 @@ class UserSetting_model extends CI_Model
      */
     public function typecheck($params)
     {
-        $sql = "SELECT member_no, type_cn FROM food_kind_code WHERE member_no=? AND type_cn=?";
+        $sql = "SELECT member_no, type_cn FROM food_kind_code WHERE member_no=? AND type_cn=? ";
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->newtype

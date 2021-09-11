@@ -85,17 +85,23 @@ class Refrigerator extends CI_Controller
         $params = (object)[
             'memberno' => $member_no
         ];
-        foreach ($result as $row => $v){
-            $reflist = [
-                'response' => 'success',
-                'food'=>$v['food_name'],
-                'quantity'=>$v['quantity'],
-                'unit'=>$v['unit_cn'],
-                'state'=>$v['expstate']
-            ];
-            $this->output->set_output(json_encode([
+        $result = $this->Refrigerator_model->getreflist($params);
+        if($result != 0){
+            foreach ($result as $row => $v){
+                $reflist = [
+                    'response' => 'success',
+                    'food'=>$v['food_name'],
+                    'quantity'=>$v['quantity'],
+                    'unit'=>$v['unit_cn'],
+                    'day'=>(strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24),
+                    'state'=>$v['exp_state']
+                ];
+                $this->output->set_output(json_encode([
                 'reflist' => array($reflist)
             ], JSON_UNESCAPED_UNICODE));
-        }
+            }
+        }else{
+            print "failure";
+        }    
     }
 }

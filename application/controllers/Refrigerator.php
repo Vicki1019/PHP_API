@@ -92,6 +92,7 @@ class Refrigerator extends CI_Controller
             foreach ($result as $row => $v){
                 $reflist['reflist'][] = [
                     'response' => 'success',
+                    'refno'=>$v['refre_list_no'],
                     'food'=>$v['food_name'],
                     'quantity'=>$v['quantity'],
                     'unit'=>$v['unit_cn'],

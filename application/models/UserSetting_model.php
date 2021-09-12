@@ -168,18 +168,18 @@ class UserSetting_model extends CI_Model
      *
      * @param object $params
      * @param string $params->memberno 使用者編號
-     * @param string $params->newtype 新分類
+     * @param string $params->newkind 新分類
      *
      * @var string $sql 檢查分類是否重複
      *
      * @return bool|string
      */
-    public function typecheck($params)
+    public function kindcheck($params)
     {
-        $sql = "SELECT member_no, type_cn FROM food_kind_code WHERE member_no=? AND type_cn=? ";
+        $sql = "SELECT member_no, kind_cn FROM food_kind_code WHERE member_no=? AND kind_cn=? ";
         $query = $this->db->query($sql, [
             $params->memberno,
-            $params->newtype
+            $params->newkind
         ]);
         if ($this->db->affected_rows() > 0) {
             return false;
@@ -192,17 +192,19 @@ class UserSetting_model extends CI_Model
      * 新增分類項目
      *
      * @param object $params
-     * @param string $params->newtype 新分類
+     * @param string $params->newkind 新分類
+     * @param string $params->memberno 使用者編號
+     * @param string $params->groupno 群組編號
      *
      * @var string $sql 新增分類項目
      *
      * @return bool|string
      */
-    public function addtype($params)
+    public function addkind($params)
     {
-        $sql = "INSERT INTO food_kind_code (type_cn, member_no, group_no) VALUE (?,?,?)";
+        $sql = "INSERT INTO food_kind_code (kind_cn, member_no, group_no) VALUE (?,?,?)";
         $query = $this->db->query($sql, [
-            $params->newtype,
+            $params->newkind,
             $params->memberno,
             $params->groupno
         ]);
@@ -217,18 +219,18 @@ class UserSetting_model extends CI_Model
      * 刪除分類項目
      *
      * @param object $params
-     * @param string $params->deletetype 欲刪除分類
+     * @param string $params->deletekind 欲刪除分類
      *
      * @var string $sql 刪除分類項目
      *
      * @return bool|string
      */
-    public function deletetype($params)
+    public function deletekind($params)
     {
-        $sql = "DELETE FROM food_kind_code WHERE member_no=? AND type_cn=?";
+        $sql = "DELETE FROM food_kind_code WHERE member_no=? AND kind_cn=?";
         $query = $this->db->query($sql, [
            $params->memberno,
-           $params->deletetype
+           $params->deletekind
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;

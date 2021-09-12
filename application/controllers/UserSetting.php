@@ -87,21 +87,21 @@ class UserSetting extends CI_Controller
         }*/
     }
 
-    public function addtype(){
-        $newtype = $this->input->post('newtype');
+    public function addkind(){
+        $newkind = $this->input->post('newkind');
         $email = $this->input->post('email');
         $member_no = $this->UserSetting_model->getmemberno($email);
         $group_no = $this->UserSetting_model->getgroupno($email);
         $params = (object)[
-            'newtype' => $newtype,
+            'newkind' => $newkind,
             'memberno' => $member_no,
             'groupno' => $group_no
         ];
-        $typecheck = $this->UserSetting_model->typecheck($params);
-        if($typecheck != true){
+        $kindcheck = $this->UserSetting_model->kindcheck($params);
+        if($kindcheck != true){
             print "repetition";
         }else{
-            $result = $this->UserSetting_model->addtype($params);
+            $result = $this->UserSetting_model->addkind($params);
             if($result != 0){
                 print "success";
             }else{
@@ -110,15 +110,15 @@ class UserSetting extends CI_Controller
         }
     }
 
-    public function deletetype(){
-        $deletetype = $this->input->post('deletetype');
+    public function deletekind(){
+        $deletekind = $this->input->post('deletekind');
         $email = $this->input->post('email');
         $member_no = $this->UserSetting_model->getmemberno($email);
         $params = (object)[
-            'deletetype' => $deletetype,
+            'deletekind' => $deletekind,
             'memberno' => $member_no
         ];
-        $result = $this->UserSetting_model->deletetype($params);
+        $result = $this->UserSetting_model->deletekind($params);
             if($result != 0){
                 print "success";
             }else{

@@ -48,8 +48,8 @@ class Refrigerator extends CI_Controller
         $unit = $this->input->post('unit');
         $unitno = $this->Refrigerator_model->getunitno($unit);
         $expdate = $this->input->post('expdate');
-        $type = $this->input->post('type');
-        $typeno = $this->Refrigerator_model->gettypeno($type);
+        $kind = $this->input->post('kind');
+        $kindno = $this->Refrigerator_model->getkindno($kind);
         $locate = $this->input->post('locate');
         $locateno = $this->Refrigerator_model->getlocateno($locate);
         $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day"));
@@ -63,8 +63,8 @@ class Refrigerator extends CI_Controller
             'unit' => $unit,
             'unitno' => $unitno,
             'expdate' => $expdate,
-            'type' => $type,
-            'typeno' => $typeno,
+            'kind' => $kind,
+            'kindno' => $kindno,
             'locate' => $locate,
             'locateno' => $locateno,
             'alertdate' => $alert_date,
@@ -114,7 +114,7 @@ class Refrigerator extends CI_Controller
         $quantity = $this->input->post('quantity'); //數量
         $unit = $this->input->post('unit'); //單位
         $expdate = $this->input->post('expdate'); //有效期限
-        $type = $this->input->post('type'); //分類
+        $kind = $this->input->post('kind'); //分類
         $locate = $this->input->post('locate'); //冷藏/冷凍
         $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day")); //推播日期
         $ck_date = date("Y/m/d H:i:s"); //創建日期
@@ -122,7 +122,7 @@ class Refrigerator extends CI_Controller
         $member_no = $this->Refrigerator_model->getmemberno($email);
         $group_no = $this->Refrigerator_model->getgroupno($email);
         $unitno = $this->Refrigerator_model->getunitno($unit);
-        $typeno = $this->Refrigerator_model->gettypeno($type);
+        $kindno = $this->Refrigerator_model->getkindno($kind);
         $locateno = $this->Refrigerator_model->getlocateno($locate);
         $exp_state = $this->Refrigerator_model->foodstate($expdate,$alert_date);
 
@@ -135,8 +135,8 @@ class Refrigerator extends CI_Controller
             'unit' => $unit,
             'unitno' => $unitno,
             'expdate' => $expdate,
-            'type' => $type,
-            'typeno' => $typeno,
+            'kind' => $kind,
+            'kindno' => $kindeno,
             'locate' => $locate,
             'locateno' => $locateno,
             'alertdate' => $alert_date,

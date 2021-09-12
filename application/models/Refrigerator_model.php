@@ -94,13 +94,13 @@ class Refrigerator_model extends CI_Model
     /**
      * 取得分類資料
      *
-     * @var string $sql 查詢資料表中 type_cn欄位的資料
+     * @var string $sql 查詢資料表中 kind_cn欄位的資料
      *
      * @return object
      */
     public function getkind($params)
     {
-        $sql = "SELECT type_cn FROM food_kind_code 
+        $sql = "SELECT kind_cn FROM food_kind_code 
         WHERE food_kind_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email=?) 
         OR food_kind_code.member_no = '0'";
         $query = $this->db->query($sql, [
@@ -116,14 +116,14 @@ class Refrigerator_model extends CI_Model
     /**
      * 取得分類編號
      *
-     * @var string $sql 查詢資料表中 type1欄位的資料
+     * @var string $sql 查詢資料表中 kind_no欄位的資料
      *
      * @return object
      */
-    public function gettypeno($type)
+    public function getkindno($kind)
     {
-        $sql = "SELECT type1 FROM food_kind_code WHERE type_cn=?";
-        $query = $this->db->query($sql,$type);
+        $sql = "SELECT kind_no FROM food_kind_code WHERE kind_cn=?";
+        $query = $this->db->query($sql,$kind);
         if ($query->num_rows() > 0) {
             return $query->row_array();
         } else {
@@ -195,7 +195,7 @@ class Refrigerator_model extends CI_Model
      * @param string $params->quantity 數量
      * @param string $params->unit 單位
      * @param string $params->expdate 有效期限
-     * @param string $params->type 分類
+     * @param string $params->kind 分類
      * @param string $params->locate 存取位置
      *
      * @var string $sql 新增冰箱清單
@@ -204,7 +204,7 @@ class Refrigerator_model extends CI_Model
      */
     public function refadd($params)
     {
-        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, type1, locate_no, ck_date, exp_state) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, kind_no, locate_no, ck_date, exp_state) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->groupno,
@@ -213,7 +213,7 @@ class Refrigerator_model extends CI_Model
             $params->unitno,
             $params->expdate,
             $params->alertdate,
-            $params->typeno,
+            $params->kindno,
             $params->locateno,
             $params->ckdate,
             $params->expstate
@@ -262,7 +262,7 @@ class Refrigerator_model extends CI_Model
     public function update_ref_item($params)
     {
         $sql = "UPDATE refre_list
-                SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, type1 = ?, locate_no = ?, ck_date = ?, exp_state = ?
+                SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, kind_no = ?, locate_no = ?, ck_date = ?, exp_state = ?
                 WHERE member_no = ? AND group_no = ? AND refre_list_no = ?";
         $this->db->query($sql, [
             $params->foodname,
@@ -270,7 +270,7 @@ class Refrigerator_model extends CI_Model
             $params->unitno,
             $params->expdate,
             $params->alertdate,
-            $params->typeno,
+            $params->kindno,
             $params->locateno,
             $params->ckdate,
             $params->expstate,

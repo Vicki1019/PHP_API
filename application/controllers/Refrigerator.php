@@ -105,4 +105,72 @@ class Refrigerator extends CI_Controller
             , JSON_UNESCAPED_UNICODE));
         }
     }
+
+    public function update_ref_item()
+    {
+        $email = $this->input->post('email'); //使用者信箱
+        $itemID = $this->input->post('refre_list_no'); //物品ID
+        $foodname = $this->input->post('foodname'); //食物名稱
+        $quantity = $this->input->post('quantity'); //數量
+        $unit = $this->input->post('unit'); //單位
+        $expdate = $this->input->post('expdate'); //有效期限
+        $type = $this->input->post('type'); //分類
+        $locate = $this->input->post('locate'); //冷藏/冷凍
+        $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day")); //推播日期
+        $ck_date = date("Y/m/d H:i:s"); //創建日期
+
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $group_no = $this->Refrigerator_model->getgroupno($email);
+        $unitno = $this->Refrigerator_model->getunitno($unit);
+        $typeno = $this->Refrigerator_model->gettypeno($type);
+        $locateno = $this->Refrigerator_model->getlocateno($locate);
+        $exp_state = $this->Refrigerator_model->foodstate($expdate,$alert_date);
+
+        $params = (object)[
+            'itemID' => $itemID,
+            'memberno' => $member_no,
+            'groupno' => $group_no,
+            'foodname' => $foodname,
+            'quantity' => $quantity,
+            'unit' => $unit,
+            'unitno' => $unitno,
+            'expdate' => $expdate,
+            'type' => $type,
+            'typeno' => $typeno,
+            'locate' => $locate,
+            'locateno' => $locateno,
+            'alertdate' => $alert_date,
+            'ckdate' => $ck_date,
+            'expstate' => $exp_state
+        ];
+
+        $result = $this->Refrigerator_model->update_ref_item($params);
+        if($result != 0){
+            print "update success";
+        }else{
+            print "update failure";
+        }
+    }
+
+    public function delete_ref_item()
+    {
+        $email = $this->input->post('email'); //使用者信箱
+        $itemID = $this->input->post('refre_list_no'); //物品ID
+
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $group_no = $this->Refrigerator_model->getgroupno($email);
+
+        $params = (object)[
+            'itemID' => $itemID,
+            'memberno' => $member_no,
+            'groupno' => $group_no,
+        ];
+
+        $result = $this->Refrigerator_model->delete_ref_item($params);
+        if($result != 0){
+            print " delete success";
+        }else{
+            print "delete failure";
+        }
+    }
 }

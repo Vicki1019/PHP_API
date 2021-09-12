@@ -249,4 +249,66 @@ class Refrigerator_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 更新冰箱清單  item
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新冰箱清單  item
+     *
+     * @return bool
+     */
+    public function update_ref_item($params)
+    {
+        $sql = "UPDATE refre_list
+                SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, type1 = ?, locate_no = ?, ck_date = ?, exp_state = ?
+                WHERE member_no = ? AND group_no = ? AND refre_list_no = ?";
+        $this->db->query($sql, [
+            $params->foodname,
+            $params->quantity,
+            $params->unitno,
+            $params->expdate,
+            $params->alertdate,
+            $params->typeno,
+            $params->locateno,
+            $params->ckdate,
+            $params->expstate,
+            $params->memberno,
+            $params->groupno,
+            $params->itemID,
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 刪除冰箱清單 item
+     *
+     * @param object $params
+     *
+     * @var string $sql 刪除冰箱清單 item
+     *
+     * @return bool
+     */
+    public function delete_ref_item($params)
+    {
+        $sql="DELETE FROM refre_list
+              WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        $this->db->query($sql, [
+            $params->itemID,
+            $params->groupno,
+            $params->memberno,
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

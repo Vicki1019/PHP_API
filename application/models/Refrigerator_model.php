@@ -178,7 +178,7 @@ class Refrigerator_model extends CI_Model
     {
         if(strtotime($alert_date) == strtotime(date("Y/m/d"))){
             return "-1"; //即將過期
-        }else if(strtotime($expdate)<=strtotime(date("Y/m/d H:i:s"))){
+        }else if(strtotime($expdate)<strtotime(date("Y/m/d"))){
             return "1"; //已過期
         }else{
             return "0"; //未過期

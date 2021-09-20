@@ -176,7 +176,7 @@ class Refrigerator_model extends CI_Model
      */
     public function foodstate($expdate,$alert_date)
     {
-        if(strtotime($alert_date) == strtotime(date("Y/m/d"))){
+        if(strtotime($alert_date) == strtotime(date("Y/m/d")) || strtotime($expdate) == strtotime(date("Y/m/d"))){
             return "-1"; //即將過期
         }else if(strtotime($expdate)<strtotime(date("Y/m/d"))){
             return "1"; //已過期
@@ -237,8 +237,10 @@ class Refrigerator_model extends CI_Model
      */
     public function getreflist($params)
     {
-        $sql = "SELECT refre_list_no, food_name, quantity, unit_code.unit_cn, exp_date, exp_state 
-                FROM refre_list LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no 
+        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, exp_state 
+                FROM refre_list 
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
                 WHERE refre_list.member_no=?";
         $query = $this->db->query($sql, [
             $params->memberno

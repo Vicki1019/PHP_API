@@ -93,6 +93,7 @@ class Refrigerator extends CI_Controller
                 $reflist['reflist'][] = [
                     'response' => 'success',
                     'refno'=>$v['refre_list_no'],
+                    'owner'=>$v['member_nickname'],
                     'food'=>$v['food_name'],
                     'quantity'=>$v['quantity'],
                     'unit'=>$v['unit_cn'],
@@ -168,9 +169,9 @@ class Refrigerator extends CI_Controller
 
         $result = $this->Refrigerator_model->delete_ref_item($params);
         if($result != 0){
-            print " delete success";
+            print "success";
         }else{
-            print "delete failure";
+            print "failure";
         }
     }
 }

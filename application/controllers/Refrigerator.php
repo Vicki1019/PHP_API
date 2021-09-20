@@ -98,6 +98,7 @@ class Refrigerator extends CI_Controller
                     'quantity'=>$v['quantity'],
                     'unit'=>$v['unit_cn'],
                     'day'=>(strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24),
+                    'kind'=>$v['kind_cn'],
                     'state'=>$v['exp_state']
                 ];
             }

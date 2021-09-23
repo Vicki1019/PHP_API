@@ -90,11 +90,10 @@ class Refrigerator extends CI_Controller
             print "failure";
         }else{
             foreach ($result as $row => $v){
-                $reflist['reflist'][] = [
+               $reflist['reflist'][] = [
                     'response' => 'success',
                     'refno'=>$v['refre_list_no'],
                     'owner'=>$v['member_nickname'],
-                    'food'=>$v['food_name'],
                     'quantity'=>$v['quantity'],
                     'unit'=>$v['unit_cn'],
                     'day'=>(strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24),

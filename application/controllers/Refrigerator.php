@@ -113,7 +113,7 @@ class Refrigerator extends CI_Controller
     public function update_ref_item()
     {
         $email = $this->input->post('email'); //使用者信箱
-        $itemID = $this->input->post('refre_list_no'); //物品ID
+        $itemID = $this->input->post('refno'); //物品ID
         $foodname = $this->input->post('foodname'); //食物名稱
         $quantity = $this->input->post('quantity'); //數量
         $unit = $this->input->post('unit'); //單位
@@ -122,6 +122,7 @@ class Refrigerator extends CI_Controller
         $locate = $this->input->post('locate'); //冷藏/冷凍
         $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day")); //推播日期
         $ck_date = date("Y/m/d H:i:s"); //創建日期
+        $todo = $this->input->post('todo'); //變更狀態
 
         $member_no = $this->Refrigerator_model->getmemberno($email);
         $group_no = $this->Refrigerator_model->getgroupno($email);
@@ -140,7 +141,7 @@ class Refrigerator extends CI_Controller
             'unitno' => $unitno,
             'expdate' => $expdate,
             'kind' => $kind,
-            'kindno' => $kindeno,
+            'kindno' => $kindno,
             'locate' => $locate,
             'locateno' => $locateno,
             'alertdate' => $alert_date,
@@ -150,9 +151,13 @@ class Refrigerator extends CI_Controller
 
         $result = $this->Refrigerator_model->update_ref_item($params);
         if($result != 0){
-            print "update success";
+           if($todo == "cancel"){
+            print "failure";
+           }else if($todo == "edit"){
+            print "success";
+           }
         }else{
-            print "update failure";
+            print "failure";
         }
     }
 

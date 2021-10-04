@@ -85,4 +85,29 @@ class Shopping_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 取得購物清單
+     *
+     * @param object $params
+     * @param string $params->member_no 使用者編號
+     *
+     * @var string $sql 取得購物清單
+     *
+     * @return mixed
+     */
+    public function get_shopping_list($params)
+    {
+        $sql = "SELECT shopping_list_no, msg_receiver, hint_datetime, food_name, quantity, check_box
+                FROM shopping_list
+                WHERE member_no =?";
+        $query = $this->db->query($sql, [
+            $params->memberno
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }

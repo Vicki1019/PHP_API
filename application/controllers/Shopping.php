@@ -33,4 +33,31 @@ class Shopping extends CI_Controller
             print "failure";
         }    
     }
+
+    public function get_shopping_list(){
+        $email = $this->input->post('email');
+        $member_no = $this->Shopping_model->getmemberno($email);
+        $params = (object)[
+            'memberno' => $member_no
+        ];
+        $result = $this->Shopping_model->get_shopping_list($params);
+        if($result == false){
+            print "failure";
+        }else{
+            foreach ($result as $row => $v){
+               $shoppinglist['reflist'][] = [
+                    'response' => 'success',
+                    'shoppinglistno' => $v['shopping_list_no'],
+                    'msgreceiver' => $v['msg_receiver'],
+                    'hintdatetime' => $v['hint_datetime'],
+                    'foodname' => $v['food_name'],     
+                    'quantity' => $v['quantity'],
+                    'checkbox' => $v['check_box']
+                ];
+            }
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($shoppinglist
+            , JSON_UNESCAPED_UNICODE));
+        }
+    }
 }

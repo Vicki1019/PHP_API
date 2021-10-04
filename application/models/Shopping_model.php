@@ -98,11 +98,12 @@ class Shopping_model extends CI_Model
      */
     public function get_shopping_list($params)
     {
-        $sql = "SELECT shopping_list_no, msg_receiver, hint_datetime, food_name, quantity, check_box
+        $sql = "SELECT shopping_list_no, msg_receiver, food_name, quantity, check_box
                 FROM shopping_list
-                WHERE member_no =?";
+                WHERE member_no =? AND hint_datetime =?";
         $query = $this->db->query($sql, [
-            $params->memberno
+            $params->memberno,
+            $params->choosedate
         ]);
         if ($query->num_rows() > 0) {
             return $query->result_array();

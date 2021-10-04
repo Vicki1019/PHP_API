@@ -37,8 +37,10 @@ class Shopping extends CI_Controller
     public function get_shopping_list(){
         $email = $this->input->post('email');
         $member_no = $this->Shopping_model->getmemberno($email);
+        $choose_date = $this->input->post('choosedate');
         $params = (object)[
-            'memberno' => $member_no
+            'memberno' => $member_no,
+            'choosedate' => $choose_date
         ];
         $result = $this->Shopping_model->get_shopping_list($params);
         if($result == false){
@@ -49,7 +51,6 @@ class Shopping extends CI_Controller
                     'response' => 'success',
                     'shoppinglistno' => $v['shopping_list_no'],
                     'msgreceiver' => $v['msg_receiver'],
-                    'hintdatetime' => $v['hint_datetime'],
                     'foodname' => $v['food_name'],     
                     'quantity' => $v['quantity'],
                     'checkbox' => $v['check_box']

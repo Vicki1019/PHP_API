@@ -64,7 +64,7 @@ class Login extends CI_Controller
 			'email' => $email,
 			'passwd' => $passwd,
 			'passwdck' => $passwdck,
-			'group_no' => $group_no,
+			'groupno' => $group_no
 		];
 
 		if (
@@ -75,8 +75,8 @@ class Login extends CI_Controller
 				print("failure");
 			}else{
 				$insertResult = $this->Login_model->register($params);
-				$groupResult = $this->Group_model->group($params);
-				if (!$insertResult && !$groupResult) {
+				$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
+				if (!$groupResult) {
 					print("failure");
 				} else {
 					print("success");

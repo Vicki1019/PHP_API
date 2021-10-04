@@ -19,14 +19,11 @@ class Group_model extends CI_Model
      *
      * @return mixed
      */
-    public function group($params)
+    public function group($insertResult,$group_no,$name)
     {
-        $sql = "INSERT INTO group_code(group_no, group_cn)
-                VALUES (?, ?)";
-        $this->db->query($sql, [
-            $params->group_no,
-            $params->name,
-        ]);
+        $sql = "INSERT INTO group_code(member_no, group_no, group_cn)
+                VALUES (?, ?, ?)";
+        $this->db->query($sql,[$insertResult, $group_no, $name]);
 
         if ($this->db->affected_rows() > 0) {
             return $this->db->affected_rows();

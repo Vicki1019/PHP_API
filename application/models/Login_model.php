@@ -111,14 +111,15 @@ class Login_model extends CI_Model
         $sql = "INSERT INTO member_info (group_no, member_nickname, email, passwd)
                 VALUES (?, ?, ?, ?)";
         $this->db->query($sql, [
-            $params->group_no,
+            $params->groupno,
             $params->name,
             $params->email,
             $params->passwd
         ]);
 
         if ($this->db->affected_rows() > 0) {
-            return $this->db->affected_rows();
+            return $this->db->insert_id();
+            // return $this->db->affected_rows();
         } else {
             return false;
         }

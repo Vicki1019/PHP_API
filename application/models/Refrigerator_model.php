@@ -204,7 +204,7 @@ class Refrigerator_model extends CI_Model
      */
     public function refadd($params)
     {
-        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, kind_no, locate_no, ck_date, exp_state) VALUE (?,?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO refre_list (member_no, group_no, food_name, quantity, unit_no, exp_date, alert_date, kind_no, locate_no, ck_date, exp_state, photo) VALUE (?,?,?,?,?,?,?,?,?,?,?,?)";
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->groupno,
@@ -216,7 +216,8 @@ class Refrigerator_model extends CI_Model
             $params->kindno,
             $params->locateno,
             $params->ckdate,
-            $params->expstate
+            $params->expstate,
+            $params->photo
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;
@@ -237,7 +238,7 @@ class Refrigerator_model extends CI_Model
      */
     public function getreflist($params)
     {
-        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state 
+        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state, photo 
                 FROM refre_list 
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no

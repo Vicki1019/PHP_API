@@ -55,6 +55,7 @@ class Refrigerator extends CI_Controller
         $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day"));
         $ck_date = date("Y/m/d H:i:s");
         $exp_state = $this->Refrigerator_model->foodstate($expdate,$alert_date);
+        $photo = $this->input->post('photo');
         $params = (object)[
             'memberno' => $member_no,
             'groupno' => $group_no,
@@ -69,7 +70,8 @@ class Refrigerator extends CI_Controller
             'locateno' => $locateno,
             'alertdate' => $alert_date,
             'ckdate' => $ck_date,
-            'expstate' => $exp_state
+            'expstate' => $exp_state,
+            'photo' => $photo
         ];
         $result = $this->Refrigerator_model->refadd($params);
         if($result != 0){
@@ -101,7 +103,8 @@ class Refrigerator extends CI_Controller
                     'day'=>(strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24),
                     'kind'=>$v['kind_cn'],
                     'locate'=>$v['locate_cn'],
-                    'state'=>$v['exp_state']
+                    'state'=>$v['exp_state'],
+                    'photo'=>$v['photo']
                 ];
             }
             $this->output->set_content_type('application/json');

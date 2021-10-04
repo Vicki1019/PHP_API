@@ -47,7 +47,7 @@ class Shopping extends CI_Controller
             print "failure";
         }else{
             foreach ($result as $row => $v){
-               $shoppinglist['reflist'][] = [
+               $shoppinglist['shoppinglist'][] = [
                     'response' => 'success',
                     'shoppinglistno' => $v['shopping_list_no'],
                     'msgreceiver' => $v['msg_receiver'],

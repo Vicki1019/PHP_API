@@ -24,7 +24,7 @@ class Refrigerator_model extends CI_Model
         $sql = "SELECT member_no FROM member_info WHERE email=?";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
-            return $query->row_array();;
+            return $query->row_array();
         } else {
             return false;
         }

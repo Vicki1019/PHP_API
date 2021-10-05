@@ -13,8 +13,8 @@ class Group extends CI_Controller
 
     public function get_allGroup_totalMember(){
         $email = $this->input->post('email');
-		$data = $this->Group_model->get_nickname($email);
-		$groups = $this->Group_model->get_group($data['name']);
+		$data = $this->Group_model->get_memberno($email);
+		$groups = $this->Group_model->get_group($data['member_no']);
 		if ($groups != 0) {
 			$datas['allgroup'] = [];
 			foreach ($groups as $key => $group) {

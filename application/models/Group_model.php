@@ -33,17 +33,17 @@ class Group_model extends CI_Model
     }
 
     /**
-     * 取得使用者名稱
+     * 取得使用者編號
      *
      * @param string $email 使用者信箱
      *
-     * @var string $sql 取得使用者名稱
+     * @var string $sql 取得使用者編號
      *
      * @return mixed
      */
-    public function get_nickname($email)
+    public function get_memberno($email)
     {
-        $sql = "SELECT member_nickname as name FROM member_info WHERE email = ?";
+        $sql = "SELECT member_no FROM member_info WHERE email = ?";
         $query = $this->db->query($sql, $email);
 
         if ($query->num_rows() > 0) {
@@ -65,7 +65,7 @@ class Group_model extends CI_Model
      */
     public function get_group($name)
     {
-        $sql = "SELECT group_no FROM group_code WHERE group_cn = ?";
+        $sql = "SELECT group_no FROM group_code WHERE member_no = ?";
         $query = $this->db->query($sql, $name);
 
         if ($query->num_rows() > 0) {

@@ -86,7 +86,7 @@ class Group_model extends CI_Model
      */
     public function get_total_group_member($group_no)
     {
-        $sql = "SELECT group_no, COUNT(member_no) as total_member FROM group_code WHERE group_no = ?";
+        $sql = "SELECT group_no, group_cn, COUNT(member_no) as total_member FROM group_code WHERE group_no = ?";
         $query = $this->db->query($sql, $group_no);
 
         if ($query->num_rows() > 0) {
@@ -98,7 +98,10 @@ class Group_model extends CI_Model
 
     public function get_group_member($invite_code)
     {
-        $sql = "SELECT group_cn FROM group_code WHERE group_no = ?";
+        $sql = "SELECT group_cn, member_info.member_nickname, member_info.email 
+                FROM group_code
+                LEFT JOIN member_info ON member_info.member_no = group_code.member_no
+                WHERE group_code.group_no = ?";
         $query = $this->db->query($sql, $invite_code);
 
         if ($query->num_rows() > 0) {

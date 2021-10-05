@@ -16,10 +16,10 @@ class Group extends CI_Controller
 		$data = $this->Group_model->get_nickname($email);
 		$groups = $this->Group_model->get_group($data['name']);
 		if ($groups != 0) {
-			$datas = [];
+			$datas['allgroup'] = [];
 			foreach ($groups as $key => $group) {
 				$data = $this->Group_model->get_total_group_member($group);
-				array_push($datas, $data);
+				array_push($datas['allgroup'], $data);
 			}
 			$this->output->set_content_type('application/json');
             $this->output->set_output(json_encode($datas
@@ -32,8 +32,8 @@ class Group extends CI_Controller
 	public function get_group_member()
 	{
 		$invite_code = $this->input->post('group_no');
-		$result = $this->Group_model->get_group_member($invite_code);
-		print_r($result);
+		$result['group_member'] = $this->Group_model->get_group_member($invite_code);
+		//print_r($result);
 		if ($result != 0)
 		{
 			$this->output->set_content_type('application/json');

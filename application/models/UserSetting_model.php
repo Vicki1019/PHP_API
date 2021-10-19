@@ -238,4 +238,22 @@ class UserSetting_model extends CI_Model
             return false;
         }
     }
+
+   /**
+     * 儲存使用者LINE NOtify Token
+     *
+     * @param object $params
+     * @param string $params->LINE Token 
+     *
+     * @var string $sql 儲存使用者LINE NOtify Token
+     *
+     * @return bool|string
+     */
+    public function savetoken($params)
+    {
+       $sql = "UPDATE member_info SET line_token=? WHERE member_no=?";
+       $this->db->query($sql,[
+           
+       ])
+    }
 }

@@ -22,6 +22,10 @@ class LineNotify extends CI_Controller
 	public function GetAuthorizeCode(){
 		$this->load->view('LineToken');
 		$email = $this->input->post("email");
+		$member_no = $this->Refigerator_model->getmemberno($email);
+		$params = (object)[
+			'memberno' => $member_no;
+		];
 		
 	}
 

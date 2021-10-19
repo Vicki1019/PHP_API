@@ -110,4 +110,39 @@ class Group_model extends CI_Model
             return false;
         }
     }
+
+    public function check_group($invite_code)
+    {
+        $sql = "SELECT group_cn FROM group_code WHERE group_code.group_no = ?";
+        $query = $this->db->query($sql, $invite_code);
+
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    public function join_group($params)
+    {
+        $sql = "INSERT INTO group_code (member_no, group_no, group_cn)
+                VALUES (?, ?, ?)";
+        $query = $this->db->query($sql, [
+            $params->member_no,
+            $params->invite_code,
+            $params->group_cn,
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_user_name($email){
+        $sql = "SELECT member_nickname as nickname FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        return $query->row_array();
+    }
 }

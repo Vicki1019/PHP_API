@@ -10,9 +10,12 @@
             $lineNotify = new lineNotify();
             $code = $_GET['code'];
             $token = $lineNotify->GetToken($code);
-           // print $token;
+            print $token;
+
+
         ?>
     </head>
     <body>
+        
     </body>
 </html>

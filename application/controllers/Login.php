@@ -23,16 +23,22 @@ class Login extends CI_Controller
 		if($result == false)
 		{
 			$this->output->set_content_type('application/json');
+			$userinfo = [
+				'response' => 'failure'
+			];
 			$this->output->set_output(json_encode([
-				'response' => 'failure',
+				'userinfo' => array($userinfo)
 			], JSON_UNESCAPED_UNICODE));
 		}else{
             foreach ($result as $row => $v){
-				$this->output->set_output(json_encode([
+				$userinfo = [
 					'response' => 'success',
 					'member_nickname'=>$v['member_nickname'],
 					'email'=>$v['email'],
 					'passwd'=>$v['passwd']
+				];
+				$this->output->set_output(json_encode([
+					'userinfo' => array($userinfo)
 				], JSON_UNESCAPED_UNICODE));
             }
 		}
@@ -58,7 +64,7 @@ class Login extends CI_Controller
 			'email' => $email,
 			'passwd' => $passwd,
 			'passwdck' => $passwdck,
-			'group_no' => $group_no,
+			'groupno' => $group_no
 		];
 
 		if (
@@ -69,8 +75,8 @@ class Login extends CI_Controller
 				print("failure");
 			}else{
 				$insertResult = $this->Login_model->register($params);
-				$groupResult = $this->Group_model->group($params);
-				if (!$insertResult && !$groupResult) {
+				$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
+				if (!$groupResult) {
 					print("failure");
 				} else {
 					print("success");

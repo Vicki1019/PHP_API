@@ -22,11 +22,18 @@ class LineNotify extends CI_Controller
 	public function GetAuthorizeCode(){
 		$this->load->view('LineToken');
 		$email = $this->input->post("email");
-		$member_no = $this->Refigerator_model->getmemberno($email);
+		$member_no = $this->Refrigerator_model->getmemberno($email);
+		$token = $this->input->post("token");
 		$params = (object)[
-			'memberno' => $member_no;
+			'memberno' => $member_no,
+			'token' => $token
 		];
-		
+		$result = $this->UserSetting_model->savetoken($params);
+		if($result != 0){
+			print "success";
+		}else{
+			print "failure";
+		}
 	}
 
 	public function GetToken($code){
@@ -34,7 +41,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://10.0.66.15/PHP_API/index.php/LineNotify/GetAuthorizeCode",
+			"redirect_uri" => "https://172.16.1.44/PHP_API/index.php/LineNotify/GetAuthorizeCode",
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
 		];

@@ -21,7 +21,8 @@ class LineNotify extends CI_Controller
 	//取得 LINE Notify Token
 	public function GetAuthorizeCode(){
 		$this->load->view('LineToken');
-		$email = $this->input->post("email");
+		
+		/*$email = $this->input->post("email");
 		$member_no = $this->Refrigerator_model->getmemberno($email);
 		$token = $this->input->post("token");
 		$params = (object)[
@@ -33,7 +34,7 @@ class LineNotify extends CI_Controller
 			print "success";
 		}else{
 			print "failure";
-		}
+		}*/
 	}
 
 	public function GetToken($code){

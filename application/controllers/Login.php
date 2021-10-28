@@ -10,6 +10,7 @@ class Login extends CI_Controller
 			$this->load->helper('url');
 			$this->load->model('Login_model');
 			$this->load->model('Group_model');
+			// $this->load->library('lib');
 	}
 
     public function login()
@@ -37,6 +38,12 @@ class Login extends CI_Controller
 					'email'=>$v['email'],
 					'passwd'=>$v['passwd']
 				];
+				// $params = (object)[
+				// 	'response' => 'login',
+				// 	'member_nickname'=>$v['member_nickname'],
+				// 	'email'=>$v['email'],
+				// ];
+				// $this->lib->user($params);
 				$this->output->set_output(json_encode([
 					'userinfo' => array($userinfo)
 				], JSON_UNESCAPED_UNICODE));
@@ -75,6 +82,11 @@ class Login extends CI_Controller
 				print("failure");
 			}else{
 				$insertResult = $this->Login_model->register($params);
+				// $params = (object)[
+				// 	'response' => 'register',
+				// 	'id'=>$insertResult,
+				// ];
+				// $this->lib->user($params);
 				$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
 				if (!$groupResult) {
 					print("failure");

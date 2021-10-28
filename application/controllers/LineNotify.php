@@ -14,15 +14,22 @@ class LineNotify extends CI_Controller
 
 	// LINE Notify 授權
     public function LineAuthorize(){
+		// $email = $this->input->post('email');
         $this->load->view('LineAuthorize');
-		
     }
 
 	//取得 LINE Notify Token
 	public function GetAuthorizeCode(){
-		$this->load->view('LineToken');
-		
-		/*$email = $this->input->post("email");
+		$data = [
+			'code' => $this->input->get('code'),
+			'state' => $this->input->get('state'),
+		];
+		$this->load->view('LineToken', $data);
+	}
+
+	public function saveToken()
+	{
+		$email = $this->input->post("email");
 		$member_no = $this->Refrigerator_model->getmemberno($email);
 		$token = $this->input->post("token");
 		$params = (object)[
@@ -34,22 +41,24 @@ class LineNotify extends CI_Controller
 			print "success";
 		}else{
 			print "failure";
-		}*/
+		}
 	}
 
-	public function GetToken($code){
+	public function GetToken(){
+		$code = $this->input->post('code');
 		$url = "https://notify-bot.line.me/oauth/token";
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://172.16.1.44/PHP_API/index.php/LineNotify/GetAuthorizeCode",
+			"redirect_uri" => "https://192.168.1.213/PHP_API/index.php/LineNotify/GetAuthorizeCode",
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
 		];
 		$header = ["Content-Type: application/x-www-form-urlencoded"];
 		$response = $this->cURL($url, $data, [], $header);
 		$response = json_decode($response,true);
-		return $response["access_token"];
+		$this->output->set_output(json_encode($response["access_token"], JSON_UNESCAPED_UNICODE));
+		// return $response["access_token"];
 	}
 
 	//POST cURL
@@ -72,7 +81,7 @@ class LineNotify extends CI_Controller
 			CURLOPT_SSL_VERIFYHOST => false,
 			CURLOPT_HTTPHEADER => $header,
 			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_HEADER => true 		
+			CURLOPT_HEADER => true
 		];
 		$options = $options + $defaultOptions;
 		curl_setopt_array($curl, $options);

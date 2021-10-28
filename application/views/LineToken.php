@@ -11,9 +11,17 @@
             $code = $_GET['code'];
             $token = $lineNotify->GetToken($code);
             print $token;
-
-
         ?>
+        <!-- <script>
+            $.ajax({
+                type:'POST',
+                url:"http://172.16.1.44/PHP_API/index.php/LineNotify/GetAuthorizeCode",
+                data:{ token: },
+                success: function (result){
+                    $('#response').show().html(result);
+                }
+            })
+        </script> -->
     </head>
     <body>
         

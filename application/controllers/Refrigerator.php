@@ -185,4 +185,25 @@ class Refrigerator extends CI_Controller
             print "failure";
         }
     }
+
+    public function change_ref_locate(){
+        $email = $this->input->post('email'); //使用者信箱
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $group_no = $this->input->post('group_no'); //欲切換之群組編號
+        $params = (object)[
+            'memberno' => $member_no,
+            'groupno' => $group_no
+        ];
+        $result = $this->Refrigerator_model->change_ref_locate($params);
+        $todo = $this->Refrigerator_model->locate_code_ck($params);
+        if($result != 0){
+            print "success";
+        }else{
+            if($todo != 0){
+                print "already";
+            }else{
+                print "failure";
+            }
+        }
+    }
 }

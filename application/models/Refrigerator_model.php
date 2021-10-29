@@ -316,4 +316,52 @@ class Refrigerator_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 更新使用者locate  item
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新使用者locate  item
+     *
+     * @return bool
+     */
+    public function change_ref_locate($params){
+        $sql = "UPDATE member_info SET locate_code=? WHERE member_no=?";
+        $this->db->query($sql, [
+            $params->groupno,
+            $params->memberno
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 檢查是否已在該locate
+     *
+     * @param object $params
+     * @param string $params->memberno 使用者編號
+     * @param string $params->locate_code 使用者所選之冰箱
+     *
+     * @var string $sql 檢查分類是否重複
+     *
+     * @return bool|string
+     */
+    public function locate_code_ck($params)
+    {
+        $sql = "SELECT member_no, locate_code FROM member_info WHERE member_no=? AND locate_code=? ";
+        $query = $this->db->query($sql, [
+            $params->memberno,
+            $params->groupno
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

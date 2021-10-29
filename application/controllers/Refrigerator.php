@@ -42,7 +42,7 @@ class Refrigerator extends CI_Controller
     public function refadd(){
         $email = $this->input->post('email');
         $member_no = $this->Refrigerator_model->getmemberno($email);
-        $group_no = $this->Refrigerator_model->getgroupno($email);
+        $group_no = $this->Refrigerator_model->get_member_locate($email);
         $foodname = $this->input->post('foodname');
         $quantity = $this->input->post('quantity');
         $unit = $this->input->post('unit');

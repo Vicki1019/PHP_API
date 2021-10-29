@@ -51,6 +51,27 @@ class Refrigerator_model extends CI_Model
         }
     }
 
+/**
+     * 取得使用者locate
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得群組編號
+     *
+     * @return bool|string
+     */
+    public function get_member_locate($email)
+    {
+        $sql = "SELECT locate_code FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
     /**
      * 取得單位資料
      *
@@ -244,7 +265,7 @@ class Refrigerator_model extends CI_Model
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
                 LEFT JOIN food_kind_code ON refre_list.kind_no = food_kind_code.kind_no
                 LEFT JOIN locate_code ON refre_list.locate_no = locate_code.locate_no 
-                WHERE refre_list.member_no=?";
+                WHERE refre_list.group_no = (SELECT locate_code FROM member_info WHERE member_info.member_no=?)";
         $query = $this->db->query($sql, [
             $params->memberno
         ]);

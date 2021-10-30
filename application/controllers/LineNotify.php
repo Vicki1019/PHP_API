@@ -8,10 +8,10 @@ class LineNotify extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('url');
-		$this->load->library('session');
-		$this->load->library('lib');
 		$this->load->model('Refrigerator_model');
 		$this->load->model('UserSetting_model');
+		$this->load->library('session');
+		$this->load->library('lib');
 	}
 
 	// LINE Notify 授權

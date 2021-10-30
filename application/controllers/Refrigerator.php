@@ -8,6 +8,7 @@ class Refrigerator extends CI_Controller
 			parent::__construct();
 			$this->load->helper('url');
 			$this->load->model('Refrigerator_model');
+            $this->load->model('Group_model');
 	}
 
     public function getUnit()
@@ -42,7 +43,7 @@ class Refrigerator extends CI_Controller
     public function refadd(){
         $email = $this->input->post('email');
         $member_no = $this->Refrigerator_model->getmemberno($email);
-        $group_no = $this->Refrigerator_model->getgroupno($email);
+        $group_no = $this->Refrigerator_model->get_member_locate($email);
         $foodname = $this->input->post('foodname');
         $quantity = $this->input->post('quantity');
         $unit = $this->input->post('unit');
@@ -84,6 +85,8 @@ class Refrigerator extends CI_Controller
     public function getreflist(){
         $email = $this->input->post('email');
         $member_no = $this->Refrigerator_model->getmemberno($email);
+       /* $locate_code = $this->Refrigerator_model->get_member_locate($email);
+        $group_name = $this->Refrigerator_model->get_group_name($locate_code);*/
         $params = (object)[
             'memberno' => $member_no
         ];
@@ -104,7 +107,9 @@ class Refrigerator extends CI_Controller
                     'kind'=>$v['kind_cn'],
                     'locate'=>$v['locate_cn'],
                     'state'=>$v['exp_state'],
-                    'photo'=>$v['photo']
+                    'photo'=>$v['photo'],
+                    'locate_name'=>$v['group_cn']
+                    //'locate_name'=>$group_name
                 ];
             }
             $this->output->set_content_type('application/json');
@@ -183,6 +188,65 @@ class Refrigerator extends CI_Controller
             print "success";
         }else{
             print "failure";
+        }
+    }
+
+    public function get_member_locate(){
+        $email = $this->input->post('email');
+        $result = $this->Refrigerator_model->get_member_locate($email);
+        if($result == false){
+            print "failure";
+        }else{
+            foreach ($result as $row => $v){
+               $loacatenow['locate_code'][] = [
+                    'locate'=>$v['locate_code']
+                ];
+            }
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($loacatenow
+            , JSON_UNESCAPED_UNICODE));
+        }
+    }
+
+    public function get_all_locate()
+	{
+		$email = $this->input->post('email');
+		$data = $this->Refrigerator_model->getmemberno($email);
+		$groups = $this->Group_model->get_group($data['member_no']);
+        if ($groups != 0) {
+            $datas['allgroup'] = [];
+            foreach ($groups as $key => $group) {
+                $data = $this->Refrigerator_model->get_all_locate($group);
+                array_push($datas['allgroup'], $data);
+            }
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode(
+                $datas,
+                JSON_UNESCAPED_UNICODE
+            ));
+        } else {
+            print "failure";
+        }
+	}
+
+    public function change_ref_locate(){
+        $email = $this->input->post('email'); //使用者信箱
+        $member_no = $this->Refrigerator_model->getmemberno($email);
+        $group_no = $this->input->post('group_no'); //欲切換之群組編號
+        $params = (object)[
+            'memberno' => $member_no,
+            'groupno' => $group_no
+        ];
+        $result = $this->Refrigerator_model->change_ref_locate($params);
+        $todo = $this->Refrigerator_model->locate_code_ck($params);
+        if($result != 0){
+            print "success";
+        }else{
+            if($todo != 0){
+                print "already";
+            }else{
+                print "failure";
+            }
         }
     }
 }

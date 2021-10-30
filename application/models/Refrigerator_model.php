@@ -51,7 +51,28 @@ class Refrigerator_model extends CI_Model
         }
     }
 
-/**
+    /**
+     * 取得群組名稱
+     *
+     * @param object $params
+     * @param string $params->group_no 信箱
+     *
+     * @var string $sql 取得群組編號
+     *
+     * @return bool|string
+     */
+    public function get_group_name($locate_code)
+    {
+        $sql = "SELECT group_cn FROM group_code WHERE group_no=?";
+        $query = $this->db->query($sql, $locate_code);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取得使用者locate
      *
      * @param object $params
@@ -66,7 +87,7 @@ class Refrigerator_model extends CI_Model
         $sql = "SELECT locate_code FROM member_info WHERE email=?";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
-            return $query->row_array();
+            return $query->result_array();
         } else {
             return false;
         }
@@ -259,12 +280,13 @@ class Refrigerator_model extends CI_Model
      */
     public function getreflist($params)
     {
-        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state, photo 
-                FROM refre_list 
+        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state, photo, group_cn
+                FROM refre_list
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                LEFT JOIN group_code ON refre_list.group_no = group_code.group_no AND refre_list.member_no = group_code.member_no
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
                 LEFT JOIN food_kind_code ON refre_list.kind_no = food_kind_code.kind_no
-                LEFT JOIN locate_code ON refre_list.locate_no = locate_code.locate_no 
+                LEFT JOIN locate_code ON refre_list.locate_no = locate_code.locate_no
                 WHERE refre_list.group_no = (SELECT locate_code FROM member_info WHERE member_info.member_no=?)";
         $query = $this->db->query($sql, [
             $params->memberno
@@ -339,6 +361,28 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得所有冰箱locate
+     *
+     * @param string $group_no 群組邀請碼
+     *
+     * @var string $sql 取得所有冰箱locate
+     *
+     * @return mixed
+     */
+    public function get_all_locate($group_no)
+    {
+        $sql = "SELECT group_no, group_cn FROM group_code WHERE group_no = ?";
+        $query = $this->db->query($sql, $group_no);
+
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+    
+
+    /**
      * 更新使用者locate  item
      *
      * @param object $params
@@ -368,7 +412,7 @@ class Refrigerator_model extends CI_Model
      * @param string $params->memberno 使用者編號
      * @param string $params->locate_code 使用者所選之冰箱
      *
-     * @var string $sql 檢查分類是否重複
+     * @var string $sql 檢查是否已在該locate
      *
      * @return bool|string
      */

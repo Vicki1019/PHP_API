@@ -251,10 +251,10 @@ class UserSetting_model extends CI_Model
      */
     public function savetoken($params)
     {
-      $sql = "UPDATE member_info SET line_token=? WHERE member_no=?";
-      $query = $this->db->query($sql, [
-        $params->memberno,
-        $params->token
+      $sql = "UPDATE member_info SET line_token=? WHERE email=?";
+      $this->db->query($sql, [
+        $params->token,
+        $params->email
      ]);
      if ($this->db->affected_rows() > 0) {
         return true;

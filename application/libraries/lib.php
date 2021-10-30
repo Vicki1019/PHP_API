@@ -36,13 +36,12 @@ class Lib
                 'nickname' => $data['member_nickname'],
             ];
         }
-        $u_data = array(
+        $userData = array(
             'username'  => $userData->nickname,
             'email'     => $userData->email,
             'logged_in' => TRUE
         );
 
-        $this->session->set_userdata($u_data);
-        return $userData;
+        $this->session->set_userdata($userData);
     }
 }

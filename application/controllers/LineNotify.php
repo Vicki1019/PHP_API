@@ -8,19 +8,21 @@ class LineNotify extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('url');
+		$this->load->library('session');
+		$this->load->library('lib');
 		$this->load->model('Refrigerator_model');
 		$this->load->model('UserSetting_model');
 	}
 
 	// LINE Notify 授權
     public function LineAuthorize(){
-		// $email = $this->input->post('email');
         $this->load->view('LineAuthorize');
     }
 
 	//取得 LINE Notify Token
 	public function GetAuthorizeCode(){
 		$data = [
+			'email' => $this->session->userData('email'),
 			'code' => $this->input->get('code'),
 			'state' => $this->input->get('state'),
 		];
@@ -30,10 +32,9 @@ class LineNotify extends CI_Controller
 	public function saveToken()
 	{
 		$email = $this->input->post("email");
-		$member_no = $this->Refrigerator_model->getmemberno($email);
 		$token = $this->input->post("token");
 		$params = (object)[
-			'memberno' => $member_no,
+			'email' => $email,
 			'token' => $token
 		];
 		$result = $this->UserSetting_model->savetoken($params);

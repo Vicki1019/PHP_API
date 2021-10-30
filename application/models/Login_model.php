@@ -136,4 +136,16 @@ class Login_model extends CI_Model
             return false;
         }
     }
+
+    public function getUserData($email)
+    {
+        $sql = "SELECT member_no, group_no, email, member_nickname FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
 }

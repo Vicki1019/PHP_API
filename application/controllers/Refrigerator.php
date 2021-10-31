@@ -43,7 +43,7 @@ class Refrigerator extends CI_Controller
     public function refadd(){
         $email = $this->input->post('email');
         $member_no = $this->Refrigerator_model->getmemberno($email);
-        $group_no = $this->Refrigerator_model->get_member_locate($email);
+        $group_no = $this->Refrigerator_model->get_ref_locate($email);
         $foodname = $this->input->post('foodname');
         $quantity = $this->input->post('quantity');
         $unit = $this->input->post('unit');
@@ -103,7 +103,7 @@ class Refrigerator extends CI_Controller
                     'quantity'=>$v['quantity'],
                     'unit'=>$v['unit_cn'],
                     'expdate'=>date('Y/m/d', strtotime($v['exp_date'])),
-                    'day'=>(strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24),
+                    'day'=>round((strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24)),
                     'kind'=>$v['kind_cn'],
                     'locate'=>$v['locate_cn'],
                     'state'=>$v['exp_state'],

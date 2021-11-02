@@ -16,13 +16,17 @@ class LineNotify extends CI_Controller
 
 	// LINE Notify 授權
     public function LineAuthorize(){
-        $this->load->view('LineAuthorize');
+		$data = [
+			'email' => $this->input->get('email'),
+		];
+		// $email = $this->input->get('email');
+        $this->load->view('LineAuthorize', $data);
     }
 
 	//取得 LINE Notify Token
 	public function GetAuthorizeCode(){
 		$data = [
-			'email' => $this->session->userData('email'),
+			'email' => $this->input->get('email'),
 			'code' => $this->input->get('code'),
 			'state' => $this->input->get('state'),
 		];
@@ -47,11 +51,12 @@ class LineNotify extends CI_Controller
 
 	public function GetToken(){
 		$code = $this->input->post('code');
+		$email = $this->input->post('email');
 		$url = "https://notify-bot.line.me/oauth/token";
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://192.168.1.213/PHP_API/index.php/LineNotify/GetAuthorizeCode",
+			"redirect_uri" => "https://192.168.1.213/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
 		];

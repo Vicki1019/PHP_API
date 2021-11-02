@@ -12,7 +12,7 @@
             // $code = $_GET['code'];
             // $token = $lineNotify->GetToken($code);
             // print $token;
-            // http://192.168.1.213/PHP_API/index.php/LineNotify/LineAuthorize
+            // http://192.168.1.213/PHP_API/index.php/LineNotify/LineAuthorize?email=ting20121108@gmail.com
         ?>
         <!-- <script>
             $.ajax({
@@ -42,8 +42,9 @@
                     email: email,
                 },
                 success: function (result){
-                    // console.log(result);
-                    var token = result;
+                    console.log(result);
+                    const token = result.substr(1, (result.length-2));
+                    console.log(token);
                     $.ajax({
                         type:'POST',
                         url: "<?= site_url()?>/LineNotify/saveToken",
@@ -53,7 +54,11 @@
                         },
                         success: function (result){
                             console.log(result);
-                            // var token = result;
+                            if (result !== "success") {
+                                alert('串接失敗');
+                            } else {
+                                alert('串接成功');
+                            }
                         }
                     })
                 }

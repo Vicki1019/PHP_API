@@ -17,6 +17,9 @@ class LineNotify extends CI_Controller
 	// LINE Notify 授權
     public function LineAuthorize(){
         $this->load->view('LineAuthorize');
+		$email = $this->input->get("email");
+		//$member_no = $this->Refrigerator_model->getmemberno($email);
+		//print $email;
     }
 
 	//取得 LINE Notify Token
@@ -51,7 +54,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://192.168.90.110/PHP_API/index.php/LineNotify/GetAuthorizeCode",
+			"redirect_uri" => "https://172.16.1.46/PHP_API/index.php/LineNotify/GetAuthorizeCode",
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
 		];

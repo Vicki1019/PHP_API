@@ -94,6 +94,27 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得使用者locate
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得群組編號
+     *
+     * @return bool|string
+     */
+    public function get_ref_locate($email)
+    {
+        $sql = "SELECT locate_code FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取得單位資料
      *
      * @var string $sql 查詢資料表中 unit_cn欄位的資料

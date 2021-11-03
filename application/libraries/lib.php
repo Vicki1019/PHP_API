@@ -36,9 +36,11 @@ class Lib
                 'nickname' => $data['member_nickname'],
             ];
         }
+        $session_id = session_id();
         $userData = array(
             'username'  => $userData->nickname,
             'email'     => $userData->email,
+            'session_id'=> $session_id,
             'logged_in' => TRUE
         );
 

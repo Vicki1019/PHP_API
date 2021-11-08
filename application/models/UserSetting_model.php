@@ -253,13 +253,34 @@ class UserSetting_model extends CI_Model
     {
       $sql = "UPDATE member_info SET line_token=? WHERE email=?";
       $this->db->query($sql, [
-        $params->token,
-        $params->email
-     ]);
-     if ($this->db->affected_rows() > 0) {
-        return true;
-    } else {
-        return false;
+      $params->token,
+      $params->email
+      ]);
+      if ($this->db->affected_rows() > 0) {
+          return true;
+      } else {
+          return false;
+      }
     }
+
+   /**
+     * 取得使用者LINE Token
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得使用者LINE Token
+     *
+     * @return bool|string
+     */
+    public function get_line_token($email)
+    {
+        $sql = "SELECT line_token FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
     }
 }

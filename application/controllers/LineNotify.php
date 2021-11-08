@@ -56,7 +56,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://172.16.1.47/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
+			"redirect_uri" => "https://10.0.34.231/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
@@ -97,5 +97,54 @@ class LineNotify extends CI_Controller
 		$response = substr($response, $headerSize);
 
 		return $response;
+	}
+
+	public function get_line_token(){
+		$email = $this->input->post("email");
+		$result = $this->UserSetting_model->get_line_token($email);
+		if($result == false){
+			print "falure";
+		}else{
+			foreach ($result as $row => $v){
+				$token['line_token'][] = [
+					 'token'=>$v['line_token']
+				 ];
+			 }
+			 $this->output->set_content_type('application/json');
+			 $this->output->set_output(json_encode($token
+			 , JSON_UNESCAPED_UNICODE));
+		}
+	}
+
+	public function SendNotify(){
+		$token = $this->input->post("token");
+		$url = "https://notify-api.line.me/api/notify";
+		//$type = "POST";
+		$header = [
+			"Authorization:	Bearer ".$token,
+			"Content-Type: multipart/form-data"
+		];
+		//傳送訊息
+		$data = [
+			"message" => "測試測試",
+			/*"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
+			"imageFullsize" => "https://i.ytimg.com/vi/OHBEDNisKnc/maxresdefault.jpg",
+			"imageFile" => "image/index.png",
+			"stickerPackageId" => 1,
+			"stickerId" => 1,
+			"notificationDisabled" => false*/
+		];
+		if(isset($data["imageFile"])){
+			$data["imageFile"] = curl_file_create($data["imageFile"]);
+		}
+
+		$response = $this->cURL($url,$data,[],$header);
+		$response = json_decode($response,true);
+		if($response["status"] != "200"){
+			print "falure";
+			//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+		}else{
+			print "success";
+		}
 	}
 }

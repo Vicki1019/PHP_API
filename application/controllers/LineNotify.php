@@ -56,7 +56,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://10.0.34.231/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
+			"redirect_uri" => "https://10.0.65.251/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
@@ -118,6 +118,7 @@ class LineNotify extends CI_Controller
 
 	public function SendNotify(){
 		$token = $this->input->post("token");
+		$message = $this->input->post("message");
 		$url = "https://notify-api.line.me/api/notify";
 		//$type = "POST";
 		$header = [
@@ -126,7 +127,7 @@ class LineNotify extends CI_Controller
 		];
 		//傳送訊息
 		$data = [
-			"message" => "測試測試",
+			"message" => $message,
 			/*"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
 			"imageFullsize" => "https://i.ytimg.com/vi/OHBEDNisKnc/maxresdefault.jpg",
 			"imageFile" => "image/index.png",

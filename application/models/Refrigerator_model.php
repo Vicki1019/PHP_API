@@ -78,7 +78,7 @@ class Refrigerator_model extends CI_Model
      * @param object $params
      * @param string $params->email 信箱
      *
-     * @var string $sql 取得群組編號
+     * @var string $sql 取得使用者locate
      *
      * @return bool|string
      */
@@ -94,12 +94,12 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
-     * 取得使用者locate
+     * 取得使用者目前locate
      *
      * @param object $params
      * @param string $params->email 信箱
      *
-     * @var string $sql 取得群組編號
+     * @var string $sql 取得使用者目前locate
      *
      * @return bool|string
      */
@@ -233,7 +233,7 @@ class Refrigerator_model extends CI_Model
     /**
      * 食物狀態確認
      *
-     * @var string $sql 檢查食品狀態
+     * @var string $sql 食物狀態確認
      *
      * @return object
      */
@@ -247,6 +247,7 @@ class Refrigerator_model extends CI_Model
             return "0"; //未過期
         }
     }
+
 
     /**
      * 新增冰箱清單
@@ -444,6 +445,47 @@ class Refrigerator_model extends CI_Model
             $params->memberno,
             $params->groupno
         ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新食品新鮮狀態(即將過期)
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新食品新鮮狀態(即將過期)
+     *
+     * @return bool
+     */
+    public function update_food_state_will($params){
+        $sql = "UPDATE refre_list SET exp_state='-1' WHERE exp_date=? OR exp_date=?";
+        $query = $this->db->query($sql, [
+            $params->exp_date,
+            $params->alert_date,
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新食品新鮮狀態(已過期)
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新食品新鮮狀態(已過期)
+     *
+     * @return bool
+     */
+    public function update_food_state_gone($today){
+        $sql = "UPDATE refre_list SET exp_state='1' WHERE exp_date<?";
+        $query = $this->db->query($sql, $today);
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {

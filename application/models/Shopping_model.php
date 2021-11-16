@@ -74,7 +74,7 @@ class Shopping_model extends CI_Model
         $query = $this->db->query($sql, [
             $params->memberno,
             $params->groupno,
-            $params->notifydate,
+            $params->alert_date,
             $params->name,
             $params->quantity,
             $params->ckdate

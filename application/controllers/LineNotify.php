@@ -56,7 +56,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://10.0.65.251/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
+			"redirect_uri" => "https://192.168.35.110/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
@@ -113,6 +113,16 @@ class LineNotify extends CI_Controller
 			 $this->output->set_content_type('application/json');
 			 $this->output->set_output(json_encode($token
 			 , JSON_UNESCAPED_UNICODE));
+		}
+	}
+
+	public function delete_line_token(){
+		$email = $this->input->post("email");
+		$result = $this->UserSetting_model->delete_line_token($email);
+		if($result != 0){
+			print "success";
+		}else{
+			print "failure";
 		}
 	}
 

@@ -263,6 +263,26 @@ class UserSetting_model extends CI_Model
       }
     }
 
+    /**
+     * 刪除LINE NOtify Token
+     *
+     * @param object $params
+     *
+     * @var string $sql 刪除LINE NOtify Token
+     *
+     * @return bool|string
+     */
+    public function delete_line_token($email)
+    {
+        $sql = "UPDATE member_info SET line_token=NULL WHERE email=?";
+        $this->db->query($sql, $email);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
    /**
      * 取得使用者LINE Token
      *

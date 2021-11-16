@@ -303,4 +303,48 @@ class UserSetting_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 取得推播設定時間
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得推播設定時間
+     *
+     * @return bool|string
+     */
+    public function get_send_hint($email)
+    {
+        $sql = "SELECT send_hint FROM member_info WHERE email=?";
+        $query = $this->db->query($sql, $email);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新預設推播時間
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新預設推播時間
+     *
+     * @return bool|string
+     */
+    public function update_notify_time($params)
+    {
+        $sql = "UPDATE member_info SET send_hint=? WHERE email=?";
+        $this->db->query($sql, [
+            $params->notify_time,
+            $params->email
+            ]);
+            if ($this->db->affected_rows() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+    }
 }

@@ -125,4 +125,35 @@ class UserSetting extends CI_Controller
                 print "failure";
             }
     }
+
+    public function get_send_hint(){
+        $email = $this->input->post('email');
+        $result = $this->UserSetting_model->get_send_hint($email);
+        if($result == false){
+            print "falure";
+        }else{
+            foreach ($result as $row => $v){
+                $send_hint['time'][] = [
+                     'send_hint' => $v['send_hint'],
+                ];
+            }
+        }
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($send_hint, JSON_UNESCAPED_UNICODE));
+    }
+
+    public function update_notify_time(){
+        $email = $this->input->post('email');
+        $new_time = $this->input->post('notify_time');
+        $params = (object)[
+            'email' => $email,
+            'notify_time' => $new_time
+        ];
+        $result = $this->UserSetting_model->update_notify_time($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
 }

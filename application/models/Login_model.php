@@ -108,8 +108,8 @@ class Login_model extends CI_Model
      */
     public function register($params)
     {
-        $sql = "INSERT INTO member_info (group_no, member_nickname, email, passwd,locate_code)
-                VALUES (?, ?, ?, ?,?)";
+        $sql = "INSERT INTO member_info (group_no, member_nickname, email, passwd, send_hint, locate_code)
+                VALUES (?, ?, ?, ?, '09:00:00', ?)";
         $this->db->query($sql, [
             $params->groupno,
             $params->name,

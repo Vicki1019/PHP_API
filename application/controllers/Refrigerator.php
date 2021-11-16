@@ -8,6 +8,7 @@ class Refrigerator extends CI_Controller
 			parent::__construct();
 			$this->load->helper('url');
 			$this->load->model('Refrigerator_model');
+            $this->load->model('UserSetting_model');
             $this->load->model('Group_model');
 	}
 
@@ -44,6 +45,7 @@ class Refrigerator extends CI_Controller
         $email = $this->input->post('email');
         $member_no = $this->Refrigerator_model->getmemberno($email);
         $group_no = $this->Refrigerator_model->get_ref_locate($email);
+        $notify_time = $this->UserSetting_model->get_send_hint($email);
         $foodname = $this->input->post('foodname');
         $quantity = $this->input->post('quantity');
         $unit = $this->input->post('unit');

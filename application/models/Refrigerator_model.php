@@ -503,12 +503,11 @@ class Refrigerator_model extends CI_Model
      * @return bool
      */
     public function food_state_notify(){
-        $sql = "SELECT refre_list.member_no, member_nickname, food_name, quantity, unit_code.unit_cn, alert_date, member_info.line_token
+        $sql = "SELECT refre_list.member_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, alert_date, exp_state,member_info.line_token
                 FROM refre_list
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
-                WHERE alert_date=NOW() AND line_token!='NULL'";
-
+                WHERE /*alert_date=NOW() AND*/ line_token!='NULL'"; 
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result_array();

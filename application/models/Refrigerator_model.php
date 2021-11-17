@@ -367,8 +367,10 @@ class Refrigerator_model extends CI_Model
      */
     public function delete_ref_item($params)
     {
-        $sql="DELETE FROM refre_list
-              WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        //0是未刪除 1是已刪除
+        $sql = "UPDATE refre_list SET is_delete=1 WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        /*$sql="DELETE FROM refre_list
+              WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";*/
         $this->db->query($sql, [
             $params->itemID,
             $params->groupno,

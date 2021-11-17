@@ -141,22 +141,25 @@ class LineNotify extends CI_Controller
 					"Content-Type: multipart/form-data"
 				];
 
+				$str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']."即將過期";
+
 				//傳送訊息
 				$data = [
-					"message" => $v['member_nickname']+"的"+$v['food_name']+$v['quntity']+$v['unit_cn']+"即將過期\n",
+					"message" => $str,
 				];
-			}
-			if(isset($data["imageFile"])){
-				$data["imageFile"] = curl_file_create($data["imageFile"]);
-			}
-	
-			$response = $this->cURL($url,$data,[],$header);
-			$response = json_decode($response,true);
-			if($response["status"] != "200"){
-				print "falure";
-				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
-			}else{
-				print "success";
+
+				if(isset($data["imageFile"])){
+					$data["imageFile"] = curl_file_create($data["imageFile"]);
+				}
+
+				$response = $this->cURL($url,$data,[],$header);
+				$response = json_decode($response,true);
+				if($response["status"] != "200"){
+					print "falure";
+					//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+				}else{
+					print "success";
+				}
 			}
 		}
 

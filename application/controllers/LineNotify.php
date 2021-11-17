@@ -204,6 +204,9 @@ class LineNotify extends CI_Controller
 					print "success";
 				}
 			}
+
+			//零庫存通知
+			
 		}
 
 

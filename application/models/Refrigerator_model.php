@@ -507,7 +507,7 @@ class Refrigerator_model extends CI_Model
                 FROM refre_list
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
-                WHERE /*alert_date=NOW() AND*/ line_token!='NULL'"; 
+                WHERE alert_date=NOW() AND line_token!='NULL'"; 
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result_array();

@@ -221,7 +221,45 @@ class LineNotify extends CI_Controller
 		];*/
 	}
 
-	/*public function ZeroNotify(){
-		
-	}*/
+	public function ZeroNotify(){
+		$email = $this->input->post("email");
+		$refre_list_no = $this->input->post('refre_list_no');
+		$params = (object)[
+            'refre_list_no' => $refre_list_no
+        ];
+		$delete_notify = $this->Refrigerator_model->get_delete_ref($params);
+		if($delete_notify == false){
+			print "falure";
+		}else{
+			foreach ($delete_notify as $row => $v){
+				$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+				$delstr = "\n冰箱中的".$v['food_name']."已經用完啦！記得要補貨哦~";
+			 }
+
+			 //傳送訊息
+			 $data = [
+				"message" => $delstr,
+			];
+
+			if(isset($data["imageFile"])){
+				$data["imageFile"] = curl_file_create($data["imageFile"]);
+			}
+
+			$response = $this->cURL($url,$data,[],$header);
+			$response = json_decode($response,true);
+			if($response["status"] != "200"){
+				print "falure";
+				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+			}else{
+				print "success";
+			}
+		}
+	}
 }

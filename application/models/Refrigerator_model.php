@@ -385,6 +385,31 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得欲刪除冰箱清單
+     *
+     * @param object $params
+     *
+     * @var string $sql 取得欲刪除冰箱清單
+     *
+     * @return mixed
+     */
+    public function get_delete_ref($params)
+    {
+        $sql = "SELECT member_nickname, food_name, line_token
+                FROM refre_list
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                WHERE is_delete=1 AND refre_list_no=?";
+        $query = $this->db->query($sql, [
+            $params->refre_list_no
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取得所有冰箱locate
      *
      * @param string $group_no 群組邀請碼

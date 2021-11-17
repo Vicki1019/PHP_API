@@ -55,7 +55,7 @@ class Refrigerator extends CI_Controller
         $kindno = $this->Refrigerator_model->getkindno($kind);
         $locate = $this->input->post('locate');
         $locateno = $this->Refrigerator_model->getlocateno($locate);
-        $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day"));
+        $alert_date = date("Y/m/d",strtotime($expdate."-1 day")) . " ". $notify_time[0]['send_hint'];
         $ck_date = date("Y/m/d H:i:s");
         $exp_state = $this->Refrigerator_model->foodstate($expdate,$alert_date);
         $photo = $this->input->post('photo');
@@ -130,12 +130,13 @@ class Refrigerator extends CI_Controller
         $expdate = $this->input->post('expdate'); //有效期限
         $kind = $this->input->post('kind'); //分類
         $locate = $this->input->post('locate'); //冷藏/冷凍
-        $alert_date = date("Y/m/d H:i:s",strtotime($expdate."-1 day")); //推播日期
+        $alert_date = date("Y/m/d",strtotime($expdate."-1 day")) . " ". $notify_time[0]['send_hint']; //推播日期
         $ck_date = date("Y/m/d H:i:s"); //創建日期
         $todo = $this->input->post('todo'); //變更狀態
 
         $member_no = $this->Refrigerator_model->getmemberno($email);
         $group_no = $this->Refrigerator_model->getgroupno($email);
+        $notify_time = $this->UserSetting_model->get_send_hint($email);
         $unitno = $this->Refrigerator_model->getunitno($unit);
         $kindno = $this->Refrigerator_model->getkindno($kind);
         $locateno = $this->Refrigerator_model->getlocateno($locate);
@@ -249,6 +250,31 @@ class Refrigerator extends CI_Controller
             }else{
                 print "failure";
             }
+        }
+    }
+
+    public function update_food_state_will(){
+        $today = date("Y/m/d");
+        $alert_date = date("Y/m/d",strtotime($today."+1 day"));
+        $params = (object)[
+            'exp_date' => $today,
+            'alert_date' => $alert_date
+        ];
+        $result = $this->Refrigerator_model->update_food_state_will($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
+    
+    public function update_food_state_gone(){
+        $today = date("Y/m/d");
+        $result = $this->Refrigerator_model->update_food_state_gone($today);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
         }
     }
 }

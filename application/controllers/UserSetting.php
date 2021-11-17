@@ -147,11 +147,11 @@ class UserSetting extends CI_Controller
         $new_time = $this->input->post('notify_time');
         $params = (object)[
             'email' => $email,
-            'notify_time' => $new_time
+            'new_time' => $new_time
         ];
         $result = $this->UserSetting_model->update_notify_time($params);
         if($result != 0){
-            print "success";
+             print "success";
         }else{
             print "failure";
         }

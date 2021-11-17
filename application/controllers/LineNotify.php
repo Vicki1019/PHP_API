@@ -127,35 +127,50 @@ class LineNotify extends CI_Controller
 	}
 
 	public function SendNotify(){
-		$token = $this->input->post("token");
-		$message = $this->input->post("message");
-		$url = "https://notify-api.line.me/api/notify";
-		//$type = "POST";
-		$header = [
-			"Authorization:	Bearer ".$token,
-			"Content-Type: multipart/form-data"
-		];
+		$ref_need_notify = $this->Refrigerator_model->food_state_notify();
+		if($ref_need_notify == false){
+			print "falure";
+		}else{
+			foreach ($ref_need_notify as $row => $v){
+				$token = $v['line_token'];
+				//$message = $this->input->post("message");
+				$url = "https://notify-api.line.me/api/notify";
+				//$type = "POST";
+				$header = [
+					"Authorization:	Bearer ".$token,
+					"Content-Type: multipart/form-data"
+				];
+
+				//傳送訊息
+				$data = [
+					"message" => $v['member_nickname']+"的"+$v['food_name']+$v['quntity']+$v['unit_cn']+"即將過期\n",
+				];
+			}
+			if(isset($data["imageFile"])){
+				$data["imageFile"] = curl_file_create($data["imageFile"]);
+			}
+	
+			$response = $this->cURL($url,$data,[],$header);
+			$response = json_decode($response,true);
+			if($response["status"] != "200"){
+				print "falure";
+				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+			}else{
+				print "success";
+			}
+		}
+
 		//傳送訊息
-		$data = [
+		/*$data = [
 			"message" => $message,
-			/*"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
+			"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
 			"imageFullsize" => "https://i.ytimg.com/vi/OHBEDNisKnc/maxresdefault.jpg",
 			"imageFile" => "image/index.png",
 			"stickerPackageId" => 1,
 			"stickerId" => 1,
-			"notificationDisabled" => false*/
-		];
-		if(isset($data["imageFile"])){
-			$data["imageFile"] = curl_file_create($data["imageFile"]);
-		}
+			"notificationDisabled" => false
+		];*/
 
-		$response = $this->cURL($url,$data,[],$header);
-		$response = json_decode($response,true);
-		if($response["status"] != "200"){
-			print "falure";
-			//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
-		}else{
-			print "success";
-		}
+		
 	}
 }

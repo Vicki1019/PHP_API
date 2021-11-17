@@ -111,4 +111,27 @@ class Shopping_model extends CI_Model
             return false;
         }
     }
+
+    /**
+     * 購物清單提醒日期
+     *
+     * @param object $params
+     *
+     * @var string $sql 購物清單提醒日期
+     *
+     * @return bool
+     */
+    public function shop_list_notify(){
+        $sql = "SELECT shopping_list.member_no, hint_datetime, food_name, quantity, member_info.line_token
+                FROM shopping_list
+                LEFT JOIN member_info ON shopping_list.member_no = shopping_list.member_no
+                WHERE /*hint_datetime=NOW() AND*/ line_token!='NULL'";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }

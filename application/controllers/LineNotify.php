@@ -9,6 +9,7 @@ class LineNotify extends CI_Controller
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->model('Refrigerator_model');
+		$this->load->model('Shopping_model');
 		$this->load->model('UserSetting_model');
 		$this->load->library('session');
 		$this->load->library('lib');
@@ -127,6 +128,8 @@ class LineNotify extends CI_Controller
 	}
 
 	public function SendNotify(){
+
+		//冰箱清單
 		$ref_need_notify = $this->Refrigerator_model->food_state_notify();
 		if($ref_need_notify == false){
 			print "falure";
@@ -140,12 +143,52 @@ class LineNotify extends CI_Controller
 					"Authorization:	Bearer ".$token,
 					"Content-Type: multipart/form-data"
 				];
-
-				$str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']."即將過期";
+				$day = round((strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24));
+				if($v['exp_state']="-1"){
+					$ref_str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']." 在".$day."天後即將過期";
+				}else if($v['exp_state']="1"){
+					$ref_str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']."已過期";
+				}
 
 				//傳送訊息
 				$data = [
-					"message" => $str,
+					"message" => $ref_str,
+				];
+
+				if(isset($data["imageFile"])){
+					$data["imageFile"] = curl_file_create($data["imageFile"]);
+				}
+
+				$response = $this->cURL($url,$data,[],$header);
+				$response = json_decode($response,true);
+				if($response["status"] != "200"){
+					print "falure";
+					//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+				}else{
+					print "success";
+				}
+			}
+
+			//購物清單
+			$shop_need_notify = $this->Shopping_model->shop_list_notify();
+			if($shop_need_notify == false){
+				print "falure";
+			}else{
+				foreach ($shop_need_notify as $row => $v){
+					$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+					
+					$shop_str = $shop_str."◎ ".$v['food_name']." x".$v['quantity']."\n";
+				}
+				//傳送訊息
+				$data = [
+					"message" => "\n明天的購物清單有：\n".$shop_str,
 				];
 
 				if(isset($data["imageFile"])){
@@ -163,6 +206,8 @@ class LineNotify extends CI_Controller
 			}
 		}
 
+
+
 		//傳送訊息
 		/*$data = [
 			"message" => $message,
@@ -173,7 +218,5 @@ class LineNotify extends CI_Controller
 			"stickerId" => 1,
 			"notificationDisabled" => false
 		];*/
-
-		
 	}
 }

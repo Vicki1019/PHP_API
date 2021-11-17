@@ -188,7 +188,7 @@ class LineNotify extends CI_Controller
 				}
 				//傳送訊息
 				$data = [
-					"message" => "\n明天的購物清單有：\n".$shop_str,
+					"message" => "\您今天的購物清單有：\n".$shop_str,
 				];
 
 				if(isset($data["imageFile"])){
@@ -206,10 +206,8 @@ class LineNotify extends CI_Controller
 			}
 
 			//零庫存通知
-			
+
 		}
-
-
 
 		//傳送訊息
 		/*$data = [
@@ -222,4 +220,8 @@ class LineNotify extends CI_Controller
 			"notificationDisabled" => false
 		];*/
 	}
+
+	/*public function ZeroNotify(){
+		
+	}*/
 }

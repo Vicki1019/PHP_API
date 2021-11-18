@@ -57,7 +57,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://172.16.1.57/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
+			"redirect_uri" => "https://192.168.97.110/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
@@ -222,11 +222,12 @@ class LineNotify extends CI_Controller
 	}
 
 	public function ZeroNotify(){
-		$email = $this->input->post("email");
 		$refre_list_no = $this->input->post('refre_list_no');
 		$params = (object)[
             'refre_list_no' => $refre_list_no
         ];
+
+		//刪除清單
 		$delete_notify = $this->Refrigerator_model->get_delete_ref($params);
 		if($delete_notify == false){
 			print "falure";
@@ -246,6 +247,42 @@ class LineNotify extends CI_Controller
 			 //傳送訊息
 			 $data = [
 				"message" => $delstr,
+			];
+
+			if(isset($data["imageFile"])){
+				$data["imageFile"] = curl_file_create($data["imageFile"]);
+			}
+
+			$response = $this->cURL($url,$data,[],$header);
+			$response = json_decode($response,true);
+			if($response["status"] != "200"){
+				print "falure";
+				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+			}else{
+				print "success";
+			}
+		}
+
+		//修改數量為0
+		$zero_notify = $this->Refrigerator_model->update_ref_zero($params);
+		if($zero_notify == false){
+			print "falure";
+		}else{
+			foreach ($zero_notify as $row => $v){
+				$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+				$zerostr = "\n冰箱中的".$v['food_name']."已經用完啦！記得要補貨哦~";
+			 }
+
+			 //傳送訊息
+			 $data = [
+				"message" => $zerostr,
 			];
 
 			if(isset($data["imageFile"])){

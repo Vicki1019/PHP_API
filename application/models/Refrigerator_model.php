@@ -357,6 +357,31 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得更新食物數量為0的清單
+     *
+     * @param object $params
+     *
+     * @var string $sql 取得更新食物數量為0的清單
+     *
+     * @return mixed
+     */
+    public function update_ref_zero($params)
+    {
+        $sql = "SELECT member_nickname, food_name, line_token
+                FROM refre_list
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                WHERE refre_list_no=?";
+        $query = $this->db->query($sql, [
+            $params->refre_list_no
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 刪除冰箱清單 item
      *
      * @param object $params

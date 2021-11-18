@@ -9,6 +9,7 @@ class LineNotify extends CI_Controller
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->model('Refrigerator_model');
+		$this->load->model('Shopping_model');
 		$this->load->model('UserSetting_model');
 		$this->load->library('session');
 		$this->load->library('lib');
@@ -56,7 +57,7 @@ class LineNotify extends CI_Controller
 		$data = [
 			"grant_type" => "authorization_code",
 			"code" => $code,
-			"redirect_uri" => "https://172.16.1.57/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
+			"redirect_uri" => "https://192.168.97.110/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
 
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
@@ -127,35 +128,175 @@ class LineNotify extends CI_Controller
 	}
 
 	public function SendNotify(){
-		$token = $this->input->post("token");
-		$message = $this->input->post("message");
-		$url = "https://notify-api.line.me/api/notify";
-		//$type = "POST";
-		$header = [
-			"Authorization:	Bearer ".$token,
-			"Content-Type: multipart/form-data"
-		];
+
+		//冰箱清單
+		$ref_need_notify = $this->Refrigerator_model->food_state_notify();
+		if($ref_need_notify == false){
+			print "falure";
+		}else{
+			foreach ($ref_need_notify as $row => $v){
+				$token = $v['line_token'];
+				//$message = $this->input->post("message");
+				$url = "https://notify-api.line.me/api/notify";
+				//$type = "POST";
+				$header = [
+					"Authorization:	Bearer ".$token,
+					"Content-Type: multipart/form-data"
+				];
+				$day = round((strtotime(date('Y/m/d', strtotime($v['exp_date'])))-strtotime(date('Y/m/d')))/(60*60*24));
+				if($v['exp_state']="-1"){
+					$ref_str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']." 在".$day."天後即將過期";
+				}else if($v['exp_state']="1"){
+					$ref_str =  "\n※".$v['member_nickname']."的「".$v['food_name']."」".strval($v['quantity']).$v['unit_cn']."已過期";
+				}
+
+				//傳送訊息
+				$data = [
+					"message" => $ref_str,
+				];
+
+				if(isset($data["imageFile"])){
+					$data["imageFile"] = curl_file_create($data["imageFile"]);
+				}
+
+				$response = $this->cURL($url,$data,[],$header);
+				$response = json_decode($response,true);
+				if($response["status"] != "200"){
+					print "falure";
+					//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+				}else{
+					print "success";
+				}
+			}
+
+			//購物清單
+			$shop_need_notify = $this->Shopping_model->shop_list_notify();
+			if($shop_need_notify == false){
+				print "falure";
+			}else{
+				foreach ($shop_need_notify as $row => $v){
+					$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+					
+					$shop_str = $shop_str."◎ ".$v['food_name']." x".$v['quantity']."\n";
+				}
+				//傳送訊息
+				$data = [
+					"message" => "\您今天的購物清單有：\n".$shop_str,
+				];
+
+				if(isset($data["imageFile"])){
+					$data["imageFile"] = curl_file_create($data["imageFile"]);
+				}
+
+				$response = $this->cURL($url,$data,[],$header);
+				$response = json_decode($response,true);
+				if($response["status"] != "200"){
+					print "falure";
+					//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+				}else{
+					print "success";
+				}
+			}
+
+			//零庫存通知
+
+		}
+
 		//傳送訊息
-		$data = [
+		/*$data = [
 			"message" => $message,
-			/*"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
+			"imageThumbnail" => "https://i.ytimg.com/vi/OHBEDNisKnc/hqdefault.jpg",
 			"imageFullsize" => "https://i.ytimg.com/vi/OHBEDNisKnc/maxresdefault.jpg",
 			"imageFile" => "image/index.png",
 			"stickerPackageId" => 1,
 			"stickerId" => 1,
-			"notificationDisabled" => false*/
-		];
-		if(isset($data["imageFile"])){
-			$data["imageFile"] = curl_file_create($data["imageFile"]);
+			"notificationDisabled" => false
+		];*/
+	}
+
+	public function ZeroNotify(){
+		$refre_list_no = $this->input->post('refre_list_no');
+		$params = (object)[
+            'refre_list_no' => $refre_list_no
+        ];
+
+		//刪除清單
+		$delete_notify = $this->Refrigerator_model->get_delete_ref($params);
+		if($delete_notify == false){
+			print "falure";
+		}else{
+			foreach ($delete_notify as $row => $v){
+				$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+				$delstr = "\n冰箱中的".$v['food_name']."已經用完啦！記得要補貨哦~";
+			 }
+
+			 //傳送訊息
+			 $data = [
+				"message" => $delstr,
+			];
+
+			if(isset($data["imageFile"])){
+				$data["imageFile"] = curl_file_create($data["imageFile"]);
+			}
+
+			$response = $this->cURL($url,$data,[],$header);
+			$response = json_decode($response,true);
+			if($response["status"] != "200"){
+				print "falure";
+				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+			}else{
+				print "success";
+			}
 		}
 
-		$response = $this->cURL($url,$data,[],$header);
-		$response = json_decode($response,true);
-		if($response["status"] != "200"){
+		//修改數量為0
+		$zero_notify = $this->Refrigerator_model->update_ref_zero($params);
+		if($zero_notify == false){
 			print "falure";
-			//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
 		}else{
-			print "success";
+			foreach ($zero_notify as $row => $v){
+				$token = $v['line_token'];
+					//$message = $this->input->post("message");
+					$url = "https://notify-api.line.me/api/notify";
+					//$type = "POST";
+					$header = [
+						"Authorization:	Bearer ".$token,
+						"Content-Type: multipart/form-data"
+					];
+				$zerostr = "\n冰箱中的".$v['food_name']."已經用完啦！記得要補貨哦~";
+			 }
+
+			 //傳送訊息
+			 $data = [
+				"message" => $zerostr,
+			];
+
+			if(isset($data["imageFile"])){
+				$data["imageFile"] = curl_file_create($data["imageFile"]);
+			}
+
+			$response = $this->cURL($url,$data,[],$header);
+			$response = json_decode($response,true);
+			if($response["status"] != "200"){
+				print "falure";
+				//throw new Exception("error ".$response["Status"]." : ".$response["message"]);
+			}else{
+				print "success";
+			}
 		}
 	}
 }

@@ -338,7 +338,7 @@ class UserSetting_model extends CI_Model
     {
         $sql = "UPDATE member_info SET send_hint=? WHERE email=?";
         $this->db->query($sql, [
-            $params->notify_time,
+            $params->new_time,
             $params->email
             ]);
             if ($this->db->affected_rows() > 0) {

@@ -309,7 +309,7 @@ class Refrigerator_model extends CI_Model
                 LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
                 LEFT JOIN food_kind_code ON refre_list.kind_no = food_kind_code.kind_no
                 LEFT JOIN locate_code ON refre_list.locate_no = locate_code.locate_no
-                WHERE refre_list.group_no = (SELECT locate_code FROM member_info WHERE member_info.member_no=?)";
+                WHERE is_delete=0 AND refre_list.group_no = (SELECT locate_code FROM member_info WHERE member_info.member_no=?)";
         $query = $this->db->query($sql, [
             $params->memberno
         ]);
@@ -357,6 +357,31 @@ class Refrigerator_model extends CI_Model
     }
 
     /**
+     * 取得更新食物數量為0的清單
+     *
+     * @param object $params
+     *
+     * @var string $sql 取得更新食物數量為0的清單
+     *
+     * @return mixed
+     */
+    public function update_ref_zero($params)
+    {
+        $sql = "SELECT member_nickname, food_name, line_token
+                FROM refre_list
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                WHERE refre_list_no=?";
+        $query = $this->db->query($sql, [
+            $params->refre_list_no
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 刪除冰箱清單 item
      *
      * @param object $params
@@ -367,8 +392,10 @@ class Refrigerator_model extends CI_Model
      */
     public function delete_ref_item($params)
     {
-        $sql="DELETE FROM refre_list
-              WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        //0是未刪除 1是已刪除
+        $sql = "UPDATE refre_list SET is_delete=1 WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        /*$sql="DELETE FROM refre_list
+              WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";*/
         $this->db->query($sql, [
             $params->itemID,
             $params->groupno,
@@ -377,6 +404,31 @@ class Refrigerator_model extends CI_Model
 
         if ($this->db->affected_rows() > 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得欲刪除冰箱清單
+     *
+     * @param object $params
+     *
+     * @var string $sql 取得欲刪除冰箱清單
+     *
+     * @return mixed
+     */
+    public function get_delete_ref($params)
+    {
+        $sql = "SELECT member_nickname, food_name, line_token
+                FROM refre_list
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                WHERE is_delete=1 AND refre_list_no=?";
+        $query = $this->db->query($sql, [
+            $params->refre_list_no
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
         } else {
             return false;
         }
@@ -488,6 +540,29 @@ class Refrigerator_model extends CI_Model
         $query = $this->db->query($sql, $today);
         if ($this->db->affected_rows() > 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 食品過期提醒日期
+     *
+     * @param object $params
+     *
+     * @var string $sql 食品過期提醒日期
+     *
+     * @return bool
+     */
+    public function food_state_notify(){
+        $sql = "SELECT refre_list.member_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, alert_date, exp_state,member_info.line_token
+                FROM refre_list
+                LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
+                LEFT JOIN unit_code ON refre_list.unit_no = unit_code.unit_no
+                WHERE alert_date=NOW() AND line_token!='NULL'"; 
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
         } else {
             return false;
         }

@@ -125,6 +125,7 @@ class Refrigerator extends CI_Controller
         $email = $this->input->post('email'); //使用者信箱
         $itemID = $this->input->post('refno'); //物品ID
         $foodname = $this->input->post('foodname'); //食物名稱
+        $notify_time = $this->UserSetting_model->get_send_hint($email);
         $quantity = $this->input->post('quantity'); //數量
         $unit = $this->input->post('unit'); //單位
         $expdate = $this->input->post('expdate'); //有效期限
@@ -136,7 +137,6 @@ class Refrigerator extends CI_Controller
 
         $member_no = $this->Refrigerator_model->getmemberno($email);
         $group_no = $this->Refrigerator_model->getgroupno($email);
-        $notify_time = $this->UserSetting_model->get_send_hint($email);
         $unitno = $this->Refrigerator_model->getunitno($unit);
         $kindno = $this->Refrigerator_model->getkindno($kind);
         $locateno = $this->Refrigerator_model->getlocateno($locate);

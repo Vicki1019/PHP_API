@@ -26,7 +26,7 @@ class API extends CI_Controller
      */
     public function getInvList()
     {
-        $type = $this->input->post('scanType');
+        //$type = $this->input->post('scanType');
         $invNum = $this->input->post('invNum');
         $invTerm = $this->input->post('invTerm');
         $invDate = $this->input->post('invDate');
@@ -40,7 +40,8 @@ class API extends CI_Controller
         $curl = curl_init($service_url);
         $curl_post_data = [
             'version' => '0.5',
-            'type' => $type,
+            //'type' => $type,
+            'type' => "QRCode",
             'invNum' => $invNum,
             'action' => 'qryInvDetail',
             'generation' => 'V2',

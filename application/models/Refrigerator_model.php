@@ -370,7 +370,7 @@ class Refrigerator_model extends CI_Model
         $sql = "SELECT member_nickname, food_name, line_token
                 FROM refre_list
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
-                WHERE refre_list_no=?";
+                WHERE quantity=0 AND refre_list_no=?";
         $query = $this->db->query($sql, [
             $params->refre_list_no
         ]);

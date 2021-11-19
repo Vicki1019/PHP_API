@@ -19,9 +19,13 @@ class UserSetting_model extends CI_Model
      * @return object
      */
     public function userCheck($email){
-        $sql = "SELECT member_nickname, email FROM member_info WHERE email=?";
+        $sql = "SELECT member_nickname, email, profile_picture FROM member_info WHERE email=?";
         $query = $this->db->query($sql, $email);
-        return $query->result_array();
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
     }
 
     /**

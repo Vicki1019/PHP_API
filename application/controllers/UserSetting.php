@@ -13,10 +13,18 @@ class UserSetting extends CI_Controller
     public function getUserInfo()
     {
         $email = $this->input->post('emaildata');
-        $user['username'] = $this->UserSetting_model->userCheck($email);
-
-        $this->output->set_content_type('application/json');
-        $this->output->set_output(json_encode($user, JSON_UNESCAPED_UNICODE));
+        $result = $this->UserSetting_model->userCheck($email);
+        if($result == false){
+            print "failure";
+        }else{
+            foreach($result as $row => $v){
+                $user['info'][]=[
+                    'photo' => $v['profile_picture']
+                ];
+            }
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($user, JSON_UNESCAPED_UNICODE));
+        }
     }
 
     public function updatename()

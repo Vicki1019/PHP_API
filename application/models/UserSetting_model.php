@@ -19,7 +19,10 @@ class UserSetting_model extends CI_Model
      * @return object
      */
     public function userCheck($email){
-        $sql = "SELECT member_nickname, email, profile_picture FROM member_info WHERE email=?";
+        $sql = "SELECT member_nickname, email, profile_picture, group_cn
+                FROM member_info 
+                LEFT JOIN group_code ON group_code.member_no = member_info.member_no
+                WHERE email=?";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -128,6 +131,7 @@ class UserSetting_model extends CI_Model
         } else {
             return false;
         }
+    }
 
     /**
      * 取得使用者編號
@@ -170,6 +174,7 @@ class UserSetting_model extends CI_Model
             return false;
         }
     }
+
 
     /**
      * 檢查分類是否重複

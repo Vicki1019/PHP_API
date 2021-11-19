@@ -19,7 +19,8 @@ class UserSetting extends CI_Controller
         }else{
             foreach($result as $row => $v){
                 $user['info'][]=[
-                    'photo' => $v['profile_picture']
+                    'photo' => $v['profile_picture'],
+                    'group_name' => $v['group_cn']
                 ];
             }
             $this->output->set_content_type('application/json');

@@ -103,29 +103,31 @@ class UserSetting_model extends CI_Model
         } else {
             return false;
         }
-
-        /*// 先查找使用者的新密碼是否與原先相同
-        $sql = "SELECT passwd FROM member_info WHERE email=?";
-        $query = $this->db->query($sql, $params->email);
-        $row = $query->row_array();
-
-        // 若不同則回傳舊密碼錯誤
-        if ($params->oldpwd != $row['passwd'])
-        {
-            return "old password failed";
-        } else {
-            $sql = "UPDATE member_info SET passwd=? WHERE email=?";
-            $query = $this->db->query($sql, [
-                $params->newpwd,
-                $params->email
-            ]);
-            if ($this->db->affected_rows() > 0) {
-                return true;
-            } else {
-                return "password update failed";
-            }
-        }*/
     }
+
+/**
+     * 更新冰箱名稱
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     * @param string $params->refname 冰箱名稱
+     * @var string $sql 更新冰箱名稱
+     *
+     * @return bool|string
+     */
+    public function update_refname($params)
+    {
+        $sql = "UPDATE group_code SET group_cn=? WHERE group_no=?";
+        $query = $this->db->query($sql, [
+            $params->refname,
+            $params->group_no
+            
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
 
     /**
      * 取得使用者編號

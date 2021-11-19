@@ -27,15 +27,17 @@ class UserSetting extends CI_Controller
         }
     }
 
-    public function updatename()
+    public function updateinfo()
     {
         $email = $this->input->post('email');
         $newName = $this->input->post('newName');
+        $newPhoto = $this->input->post('newphoto');
         $params = (object)[
             'newName' => $newName,
+            'newphoto' => $newPhoto,
             'email' => $email
         ];
-        $result = $this->UserSetting_model->updatename($params);
+        $result = $this->UserSetting_model->updateinfo($params);
         if($result > 0){
             print "success";
         }else{

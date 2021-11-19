@@ -29,21 +29,23 @@ class UserSetting_model extends CI_Model
     }
 
     /**
-     * 更新使用者暱稱
+     * 更新使用者暱稱與頭貼
      *
      * @param object $params
      * @param string $params->email 信箱
      * @param string $params->newname 新的暱稱
+     * @param string $params->newphoto 新的頭貼
      *
      * @var string $sql 更新使用者暱稱
      *
      * @return bool
      */
-    public function updatename($params)
+    public function updateinfo($params)
     {
-        $sql = "UPDATE member_info SET member_nickname=? WHERE email=?";
+        $sql = "UPDATE member_info SET member_nickname=? , profile_picture=? WHERE email=?";
         $query = $this->db->query($sql, [
             $params->newName,
+            $params->newphoto,
             $params->email
         ]);
         if ($this->db->affected_rows() > 0) {

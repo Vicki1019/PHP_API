@@ -73,12 +73,14 @@ class Login extends CI_Controller
 		$email = $this->input->post('email');
 		$passwd = $this->input->post('passwd');
 		$passwdck = $this->input->post('passwdck');
+		$profile_picture = $this->input->post('photo');
 
 		$params = (object)[
 			'name' => $name,
 			'email' => $email,
 			'passwd' => $passwd,
 			'passwdck' => $passwdck,
+			'photo' => $profile_picture,
 			'groupno' => $group_no
 		];
 

@@ -332,7 +332,7 @@ class Refrigerator_model extends CI_Model
     public function update_ref_item($params)
     {
         $sql = "UPDATE refre_list
-                SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, kind_no = ?, locate_no = ?, ck_date = ?, exp_state = ?
+                SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, kind_no = ?, locate_no = ?, ck_date = ?, exp_state = ?, photo = ?
                 WHERE member_no = ? AND group_no = ? AND refre_list_no = ?";
         $this->db->query($sql, [
             $params->foodname,
@@ -344,6 +344,7 @@ class Refrigerator_model extends CI_Model
             $params->locateno,
             $params->ckdate,
             $params->expstate,
+            $params->photo,
             $params->memberno,
             $params->groupno,
             $params->itemID,

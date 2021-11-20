@@ -124,6 +124,7 @@ class Refrigerator extends CI_Controller
     {
         $email = $this->input->post('email'); //使用者信箱
         $itemID = $this->input->post('refno'); //物品ID
+        $photo = $this->input->post('photo'); //物品ID
         $foodname = $this->input->post('foodname'); //食物名稱
         $notify_time = $this->UserSetting_model->get_send_hint($email);
         $quantity = $this->input->post('quantity'); //數量
@@ -146,6 +147,7 @@ class Refrigerator extends CI_Controller
             'itemID' => $itemID,
             'memberno' => $member_no,
             'groupno' => $group_no,
+            'photo' => $photo,
             'foodname' => $foodname,
             'quantity' => $quantity,
             'unit' => $unit,

@@ -302,7 +302,7 @@ class Refrigerator_model extends CI_Model
      */
     public function getreflist($params)
     {
-        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state, photo, group_cn
+        $sql = "SELECT refre_list_no, member_nickname, food_name, quantity, unit_code.unit_cn, exp_date, kind_cn, locate_code.locate_cn, exp_state, refre_list.photo, group_cn
                 FROM refre_list
                 LEFT JOIN member_info ON refre_list.member_no = member_info.member_no
                 LEFT JOIN group_code ON refre_list.group_no = group_code.group_no AND refre_list.member_no = group_code.member_no
@@ -347,7 +347,7 @@ class Refrigerator_model extends CI_Model
             $params->photo,
             $params->memberno,
             $params->groupno,
-            $params->itemID,
+            $params->itemID
         ]);
 
         if ($this->db->affected_rows() > 0) {

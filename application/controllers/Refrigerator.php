@@ -204,7 +204,8 @@ class Refrigerator extends CI_Controller
         }else{
             foreach ($result as $row => $v){
                $loacatenow['locate_code'][] = [
-                    'locate'=>$v['locate_code']
+                    'locate'=>$v['locate_code'],
+                    'group_name'=>$v['group_cn']
                 ];
             }
             $this->output->set_content_type('application/json');

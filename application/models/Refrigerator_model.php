@@ -84,7 +84,10 @@ class Refrigerator_model extends CI_Model
      */
     public function get_member_locate($email)
     {
-        $sql = "SELECT locate_code FROM member_info WHERE email=?";
+        $sql = "SELECT locate_code, group_cn 
+                FROM member_info  
+                LEFT JOIN group_code ON member_info.locate_code = group_code.group_no
+                WHERE email=?";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
             return $query->result_array();

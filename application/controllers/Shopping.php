@@ -65,4 +65,25 @@ class Shopping extends CI_Controller
             , JSON_UNESCAPED_UNICODE));
         }
     }
+
+    public function delete_shop_item(){
+        $email = $this->input->post('email');
+        $shop_no = $this->input->post('shop_no');
+
+        $member_no = $this->Shopping_model->getmemberno($email);
+        $group_no = $this->Shopping_model->getgroupno($email);
+
+        $params = (object)[
+            'shop_no' => $shop_no,
+            'memberno' => $member_no,
+            'groupno' => $group_no
+        ];
+
+        $result = $this->Shopping_model->delete_shop_item($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
 }

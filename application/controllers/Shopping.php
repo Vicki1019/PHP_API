@@ -66,6 +66,52 @@ class Shopping extends CI_Controller
         }
     }
 
+    public function update_shop_name(){
+        $email = $this->input->post('email');
+        $shop_no = $this->input->post('shop_no');
+        $shop_name = $this->input->post('shop_name');
+
+        $member_no = $this->Shopping_model->getmemberno($email);
+        $group_no = $this->Shopping_model->getgroupno($email);
+
+        $params = (object)[
+            'shop_no' => $shop_no,
+            'shop_name' => $shop_name,
+            'memberno' => $member_no,
+            'groupno' => $group_no
+        ];
+
+        $result = $this->Shopping_model->update_shop_name($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
+
+    public function update_shop_quantity(){
+        $email = $this->input->post('email');
+        $shop_no = $this->input->post('shop_no');
+        $shop_quantity = $this->input->post('shop_quantity');
+
+        $member_no = $this->Shopping_model->getmemberno($email);
+        $group_no = $this->Shopping_model->getgroupno($email);
+
+        $params = (object)[
+            'shop_no' => $shop_no,
+            'shop_quantity' => $shop_quantity,
+            'memberno' => $member_no,
+            'groupno' => $group_no
+        ];
+
+        $result = $this->Shopping_model->update_shop_quantity($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+    }
+
     public function delete_shop_item(){
         $email = $this->input->post('email');
         $shop_no = $this->input->post('shop_no');

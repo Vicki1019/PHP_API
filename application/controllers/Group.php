@@ -60,11 +60,11 @@ class Group extends CI_Controller
 		} else {
 			$email = $this->input->post('email');
 			$member_no = $this->Refrigerator_model->getmemberno($email);
-			$group_data = $this->Group_model->get_user_name($email);
+			$group_data = $this->Group_model->get_group_name($invite_code);
 			$params = (object)[
 				'member_no' => $member_no,
 				'invite_code' => $invite_code,
-				'group_cn' => $group_data['nickname'],
+				'group_cn' => $group_data['group_cn'],
 			];
 			$result = $this->Group_model->join_group($params);
 			if (!$result) {

@@ -140,9 +140,9 @@ class Group_model extends CI_Model
         }
     }
 
-    public function get_user_name($email){
-        $sql = "SELECT member_nickname as nickname FROM member_info WHERE email=?";
-        $query = $this->db->query($sql, $email);
+    public function get_group_name($invite_code){
+        $sql = "SELECT group_cn FROM group_code WHERE group_no=?";
+        $query = $this->db->query($sql, $invite_code);
         return $query->row_array();
     }
 }

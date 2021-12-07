@@ -137,7 +137,8 @@ class Refrigerator extends CI_Controller
         $todo = $this->input->post('todo'); //變更狀態
 
         $member_no = $this->Refrigerator_model->getmemberno($email);
-        $group_no = $this->Refrigerator_model->getgroupno($email);
+        //$group_no = $this->Refrigerator_model->getgroupno($email);
+        $group_no = $this->Refrigerator_model->get_ref_locate($email);
         $unitno = $this->Refrigerator_model->getunitno($unit);
         $kindno = $this->Refrigerator_model->getkindno($kind);
         $locateno = $this->Refrigerator_model->getlocateno($locate);
@@ -180,7 +181,8 @@ class Refrigerator extends CI_Controller
         $itemID = $this->input->post('refre_list_no'); //物品ID
 
         $member_no = $this->Refrigerator_model->getmemberno($email);
-        $group_no = $this->Refrigerator_model->getgroupno($email);
+        //$group_no = $this->Refrigerator_model->getgroupno($email);
+        $group_no = $this->Refrigerator_model->get_ref_locate($email);
 
         $params = (object)[
             'itemID' => $itemID,

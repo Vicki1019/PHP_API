@@ -7,6 +7,7 @@ class API extends CI_Controller
 	{
 			parent::__construct();
 			$this->load->helper('url');
+            $this->load->library('search');
 			$this->load->model('Login_model');
 	}
 
@@ -70,5 +71,40 @@ class API extends CI_Controller
         }else {
             $this->output->set_output(json_encode($decoded, JSON_UNESCAPED_UNICODE));
         }
+    }
+    public function catchBrowserPicture()
+    {
+    // https://www.google.com.tw/imghp?hl=zh-TW
+    /**
+     * https://serpapi.com/search.json?
+     * engine=google 搜尋引擊
+     * &q=Coffee 搜尋內容
+     * &hl=zh-tw 使用語言
+     * &api_key=efa36be74df8e9b8734b27cb8599b18a758410272e86c5172df262790b47c56b
+     */
+        if(isset($_ENV["API_KEY"])) {
+            $this->API_KEY = $_ENV["API_KEY"];
+        } else {
+            $this->API_KEY = "efa36be74df8e9b8734b27cb8599b18a758410272e86c5172df262790b47c56b";
+        }
+        $q = $this->input->post('q');
+        $client = new GoogleSearch($this->API_KEY);
+        $data = $client->get_json([
+            'q' => $q,
+            'tbm' => 'isch',
+            'ijn' => 0,
+            'output' => 'JSON'
+        ]);
+
+        $images = [];
+        foreach($data->images_results as $image_result) {
+            array_push($images, $image_result->original);
+        }
+        // print_r($images);
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode(
+            $images,
+            JSON_UNESCAPED_UNICODE
+        ));
     }
 }

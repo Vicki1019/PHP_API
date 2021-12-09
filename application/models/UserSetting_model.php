@@ -22,7 +22,7 @@ class UserSetting_model extends CI_Model
         $sql = "SELECT member_nickname, email, profile_picture, group_cn
                 FROM member_info 
                 LEFT JOIN group_code ON group_code.member_no = member_info.member_no
-                WHERE email=?";
+                WHERE email=? AND member_info.locate_code = group_code.group_no";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
             return $query->result_array();

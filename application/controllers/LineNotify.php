@@ -58,7 +58,6 @@ class LineNotify extends CI_Controller
 			"grant_type" => "authorization_code",
 			"code" => $code,
 			"redirect_uri" => "https://140.128.1.58/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=" . $email,
-
 			"client_id" => "AozwCtchOfAAovlPFxAt42",
 			"client_secret" => "sJYts3D7hVK9fhWSn0mGRG951iA0Uae9duFkFgFZCnn"
 		];

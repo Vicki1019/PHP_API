@@ -182,7 +182,7 @@ class LineNotify extends CI_Controller
 						"Authorization:	Bearer ".$token,
 						"Content-Type: multipart/form-data"
 					];
-					
+					$shop_str ="";
 					$shop_str = $shop_str."◎ ".$v['food_name']." x".$v['quantity']."\n";
 				}
 				//傳送訊息

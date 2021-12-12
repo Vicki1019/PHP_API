@@ -106,7 +106,6 @@ class UserSetting extends CI_Controller
         $params = (object)[
             'member_no' => $member_no,
             'refname' => $refname,
-            'group_no' => $group_no,
             'group_no' => $group_no
         ];
         $result = $this->UserSetting_model->update_refname($params);
@@ -174,14 +173,36 @@ class UserSetting extends CI_Controller
 
     public function update_notify_time(){
         $email = $this->input->post('email');
+        $member_no = $this->UserSetting_model->getmemberno($email);
         $new_time = $this->input->post('notify_time');
         $params = (object)[
             'email' => $email,
+            'member_no' => $member_no,
             'new_time' => $new_time
         ];
         $result = $this->UserSetting_model->update_notify_time($params);
+        $old_ref_alert = $this->UserSetting_model->get_reflist_alert($member_no);
         if($result != 0){
-             print "success";
+            if($old_ref_alert==false){
+                print "failure";
+            }else{
+                foreach ($old_ref_alert as $row => $v){
+                    $new_ref_alert = date('Y/m/d', strtotime($v['alert_date']))." ".$new_time."\n";
+                    print $new_ref_alert;
+                    $ref_params = (object)[
+                        'member_no' => $member_no,
+                        'food_no' =>$v['refre_list_no'],
+                        'new_ref_alert' => $new_ref_alert
+                    ];
+                    $update_ref_alert = $this->UserSetting_model->update_reflist_notify($ref_params);
+                    /*if($update_ref_alert == false){
+                        print "failure";
+                    }else{
+                        print "success";
+                    }*/
+                }
+                print "success";
+            }             
         }else{
             print "failure";
         }

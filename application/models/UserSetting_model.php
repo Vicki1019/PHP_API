@@ -379,4 +379,72 @@ class UserSetting_model extends CI_Model
                 return false;
             }
     }
+
+    /**
+     * 取得冰箱清單之推播時間
+     *
+     * @param object $params
+     * @param string $params->email 信箱
+     *
+     * @var string $sql 取得冰箱清單之推播時間
+     *
+     * @return bool|string
+     */
+    public function get_reflist_alert($member_no)
+    {
+        $sql = "SELECT refre_list_no, alert_date FROM refre_list WHERE member_no=?";
+        $query = $this->db->query($sql, $member_no);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新冰箱清單推播時間
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新冰箱清單推播時間
+     *
+     * @return bool|string
+     */
+    public function update_reflist_notify($params)
+    {
+        $sql = "UPDATE refre_list SET alert_date=? WHERE member_no=? AND refre_list_no=?";
+        $this->db->query($sql, [
+            $params->new_ref_alert,
+            $params->member_no,
+            $params->food_no
+            ]);
+            if ($this->db->affected_rows() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+
+    /**
+     * 更新購物清單推播時間
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新購物清單推播時間
+     *
+     * @return bool|string
+     */
+    public function update_shoplist_notify($params)
+    {
+        $sql = "UPDATE shopping_list SET send_hint=? WHERE email=?";
+        $this->db->query($sql, [
+            $params->new_time,
+            $params->email
+            ]);
+            if ($this->db->affected_rows() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+    }
 }

@@ -100,10 +100,13 @@ class UserSetting extends CI_Controller
 
     public function update_refname(){
         $email = $this->input->post('email');
-        $group_no = $this->UserSetting_model->getgroupno($email);
+        $member_no = $this->UserSetting_model->getmemberno($email);
+        $group_no = $this->UserSetting_model->get_user_locate($email);
         $refname = $this->input->post('refname');
         $params = (object)[
+            'member_no' => $member_no,
             'refname' => $refname,
+            'group_no' => $group_no,
             'group_no' => $group_no
         ];
         $result = $this->UserSetting_model->update_refname($params);

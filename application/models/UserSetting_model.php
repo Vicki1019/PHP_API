@@ -32,6 +32,24 @@ class UserSetting_model extends CI_Model
     }
 
     /**
+     * 取得使用者位置
+     *
+     * @var string $sql 
+     *
+     * @return object
+     */
+    public function get_user_locate($email)
+    {
+        $sql = "SELECT locate_code FROM member_info WHERE email=?";
+        $query = $this->db->query($sql,$email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 更新使用者暱稱與頭貼
      *
      * @param object $params
@@ -120,11 +138,12 @@ class UserSetting_model extends CI_Model
      */
     public function update_refname($params)
     {
-        $sql = "UPDATE group_code SET group_cn=? WHERE group_no=?";
+        $sql = "UPDATE group_code SET group_cn=? WHERE group_no=? AND group_cn=(SELECT group_cn FROM group_code WHERE group_no=? AND member_no=?)";
         $query = $this->db->query($sql, [
             $params->refname,
-            $params->group_no
-            
+            $params->group_no,
+            $params->group_no,
+            $params->member_no
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;

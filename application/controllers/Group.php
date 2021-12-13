@@ -9,6 +9,7 @@ class Group extends CI_Controller
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->model('Group_model');
+		$this->load->model('Login_model');
 		$this->load->model('Refrigerator_model');
 		$this->load->model('UserSetting_model');
 	}
@@ -49,6 +50,26 @@ class Group extends CI_Controller
 			print "failure";
 		}
 	}
+
+	public function create_group(){
+		$randomstrCheck = false;
+
+		while (!$randomstrCheck) {
+			$group_no = $this->Login_model->randomStr(5);
+			$randomstrCheck = $this->Login_model->randomStrCheck($group_no);
+		}
+		
+        $email = $this->input->post('email');
+		$member_no = $this->UserSetting_model->getmemberno($email);
+		$group_name = $this->input->post('group_name');
+		
+		$result = $this->Group_model->group($member_no, $group_no, $group_name);
+		if (!$result) {
+			print "failure";
+		} else {
+			print "success";
+		}
+    }
 
 	public function join_group()
 	{

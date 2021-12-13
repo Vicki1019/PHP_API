@@ -123,6 +123,7 @@ class Group_model extends CI_Model
         }
     }
 
+
     public function join_group($params)
     {
         $sql = "INSERT INTO group_code (member_no, group_no, group_cn)

@@ -182,24 +182,38 @@ class UserSetting extends CI_Controller
         ];
         $result = $this->UserSetting_model->update_notify_time($params);
         $old_ref_alert = $this->UserSetting_model->get_reflist_alert($member_no);
+        $old_shop_alert = $this->UserSetting_model->get_shoplist_alert($member_no);
         if($result != 0){
             if($old_ref_alert==false){
                 print "failure";
             }else{
+                //修改冰箱清單推播時間
                 foreach ($old_ref_alert as $row => $v){
-                    $new_ref_alert = date('Y/m/d', strtotime($v['alert_date']))." ".$new_time."\n";
-                    print $new_ref_alert;
+                    $new_ref_alert = date('Y/m/d', strtotime($v['alert_date']))." ".$new_time;
+                    //print $new_ref_alert;
                     $ref_params = (object)[
                         'member_no' => $member_no,
                         'food_no' =>$v['refre_list_no'],
                         'new_ref_alert' => $new_ref_alert
                     ];
                     $update_ref_alert = $this->UserSetting_model->update_reflist_notify($ref_params);
-                    /*if($update_ref_alert == false){
+                    if($update_ref_alert == false){
                         print "failure";
-                    }else{
-                        print "success";
-                    }*/
+                    }
+                }
+                //修改購物清單推播時間
+                foreach ($old_shop_alert as $row => $v){
+                    $new_shop_alert = date('Y/m/d', strtotime($v['hint_datetime']))." ".$new_time."\n";
+                    print $new_shop_alert;
+                    $shop_params = (object)[
+                        'member_no' => $member_no,
+                        'shoplist_no' => $v['shopping_list_no'],
+                        'new_shop_alert' => $new_shop_alert
+                    ];
+                    $update_shop_alert = $this->UserSetting_model->update_shoplist_notify($shop_params);
+                    if($update_shop_alert == false){
+                        print "failure";
+                    }
                 }
                 print "success";
             }             

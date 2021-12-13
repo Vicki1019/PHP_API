@@ -384,7 +384,7 @@ class UserSetting_model extends CI_Model
      * 取得冰箱清單之推播時間
      *
      * @param object $params
-     * @param string $params->email 信箱
+     * @param string $params->member_no 使用者編號
      *
      * @var string $sql 取得冰箱清單之推播時間
      *
@@ -426,6 +426,27 @@ class UserSetting_model extends CI_Model
     }
 
     /**
+     * 取得購物清單之推播時間
+     *
+     * @param object $params
+     * @param string $params->member_no 使用者編號
+     *
+     * @var string $sql 取得購物清單之推播時間
+     *
+     * @return bool|string
+     */
+    public function get_shoplist_alert($member_no)
+    {
+        $sql = "SELECT shopping_list_no, hint_datetime FROM shopping_list WHERE member_no=?";
+        $query = $this->db->query($sql, $member_no);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 更新購物清單推播時間
      *
      * @param object $params
@@ -436,10 +457,11 @@ class UserSetting_model extends CI_Model
      */
     public function update_shoplist_notify($params)
     {
-        $sql = "UPDATE shopping_list SET send_hint=? WHERE email=?";
+        $sql = "UPDATE shopping_list SET hint_datetime=? WHERE member_no=? AND shopping_list_no=?";
         $this->db->query($sql, [
-            $params->new_time,
-            $params->email
+            $params->new_shop_alert,
+            $params->member_no,
+            $params->shoplist_no
             ]);
             if ($this->db->affected_rows() > 0) {
                 return true;

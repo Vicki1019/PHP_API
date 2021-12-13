@@ -123,6 +123,20 @@ class Group_model extends CI_Model
         }
     }
 
+    public function check_join_group($params)
+    {
+        $sql = "SELECT group_cn FROM group_code WHERE group_code.group_no=? AND member_no=?";
+        $query = $this->db->query($sql, [
+            $params->invite_code,
+            $params->member_no,
+        ]);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
 
     public function join_group($params)
     {

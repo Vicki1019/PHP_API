@@ -75,7 +75,6 @@ class Group extends CI_Controller
 	{
 		$invite_code = $this->input->post('group_no');
 		$check = $this->Group_model->check_group($invite_code);
-
 		if (!$check) {
 			print "failure";
 		} else {
@@ -87,11 +86,16 @@ class Group extends CI_Controller
 				'invite_code' => $invite_code,
 				'group_cn' => $group_data['group_cn'],
 			];
-			$result = $this->Group_model->join_group($params);
-			if (!$result) {
-				print "failure";
-			} else {
-				print "success";
+			$check_join_group =  $this->Group_model->check_join_group($params);
+			if($check_join_group == false){
+				$result = $this->Group_model->join_group($params);
+				if (!$result) {
+					print "failure";
+				} else {
+					print "success";
+				}
+			}else{
+				print "alreadyjoin";
 			}
 		}
 	}

@@ -203,8 +203,8 @@ class UserSetting extends CI_Controller
                 }
                 //修改購物清單推播時間
                 foreach ($old_shop_alert as $row => $v){
-                    $new_shop_alert = date('Y/m/d', strtotime($v['hint_datetime']))." ".$new_time."\n";
-                    print $new_shop_alert;
+                    $new_shop_alert = date('Y/m/d', strtotime($v['hint_datetime']))." ".$new_time;
+                    //print $new_shop_alert;
                     $shop_params = (object)[
                         'member_no' => $member_no,
                         'shoplist_no' => $v['shopping_list_no'],

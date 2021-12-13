@@ -22,10 +22,28 @@ class UserSetting_model extends CI_Model
         $sql = "SELECT member_nickname, email, profile_picture, group_cn
                 FROM member_info 
                 LEFT JOIN group_code ON group_code.member_no = member_info.member_no
-                WHERE email=?";
+                WHERE email=? AND member_info.locate_code = group_code.group_no";
         $query = $this->db->query($sql, $email);
         if ($query->num_rows() > 0) {
             return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 取得使用者位置
+     *
+     * @var string $sql 
+     *
+     * @return object
+     */
+    public function get_user_locate($email)
+    {
+        $sql = "SELECT locate_code FROM member_info WHERE email=?";
+        $query = $this->db->query($sql,$email);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
         } else {
             return false;
         }
@@ -120,11 +138,12 @@ class UserSetting_model extends CI_Model
      */
     public function update_refname($params)
     {
-        $sql = "UPDATE group_code SET group_cn=? WHERE group_no=?";
+        $sql = "UPDATE group_code SET group_cn=? WHERE group_no=? AND group_cn=(SELECT group_cn FROM group_code WHERE group_no=? AND member_no=?)";
         $query = $this->db->query($sql, [
             $params->refname,
-            $params->group_no
-            
+            $params->group_no,
+            $params->group_no,
+            $params->member_no
         ]);
         if ($this->db->affected_rows() > 0) {
             return true;
@@ -353,6 +372,96 @@ class UserSetting_model extends CI_Model
         $this->db->query($sql, [
             $params->new_time,
             $params->email
+            ]);
+            if ($this->db->affected_rows() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+
+    /**
+     * 取得冰箱清單之推播時間
+     *
+     * @param object $params
+     * @param string $params->member_no 使用者編號
+     *
+     * @var string $sql 取得冰箱清單之推播時間
+     *
+     * @return bool|string
+     */
+    public function get_reflist_alert($member_no)
+    {
+        $sql = "SELECT refre_list_no, alert_date FROM refre_list WHERE member_no=?";
+        $query = $this->db->query($sql, $member_no);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新冰箱清單推播時間
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新冰箱清單推播時間
+     *
+     * @return bool|string
+     */
+    public function update_reflist_notify($params)
+    {
+        $sql = "UPDATE refre_list SET alert_date=? WHERE member_no=? AND refre_list_no=?";
+        $this->db->query($sql, [
+            $params->new_ref_alert,
+            $params->member_no,
+            $params->food_no
+            ]);
+            if ($this->db->affected_rows() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+
+    /**
+     * 取得購物清單之推播時間
+     *
+     * @param object $params
+     * @param string $params->member_no 使用者編號
+     *
+     * @var string $sql 取得購物清單之推播時間
+     *
+     * @return bool|string
+     */
+    public function get_shoplist_alert($member_no)
+    {
+        $sql = "SELECT shopping_list_no, hint_datetime FROM shopping_list WHERE member_no=?";
+        $query = $this->db->query($sql, $member_no);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新購物清單推播時間
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新購物清單推播時間
+     *
+     * @return bool|string
+     */
+    public function update_shoplist_notify($params)
+    {
+        $sql = "UPDATE shopping_list SET hint_datetime=? WHERE member_no=? AND shopping_list_no=?";
+        $this->db->query($sql, [
+            $params->new_shop_alert,
+            $params->member_no,
+            $params->shoplist_no
             ]);
             if ($this->db->affected_rows() > 0) {
                 return true;

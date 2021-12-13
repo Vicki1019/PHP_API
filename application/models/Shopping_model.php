@@ -134,4 +134,82 @@ class Shopping_model extends CI_Model
             return false;
         }
     }
+
+     /**
+     * 更新購物清單名稱
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新購物清單名稱
+     *
+     * @return bool
+     */
+    public function update_shop_name($params)
+    {
+        $sql="UPDATE shopping_list SET food_name=? WHERE shopping_list_no = ? AND group_no = ? AND member_no = ? ";
+        $this->db->query($sql, [
+            $params->shop_name,
+            $params->shop_no,
+            $params->groupno,
+            $params->memberno
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新購物清單數量
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新購物清單數量
+     *
+     * @return bool
+     */
+    public function update_shop_quantity($params)
+    {
+        $sql="UPDATE shopping_list SET quantity=? WHERE shopping_list_no = ? AND group_no = ? AND member_no = ? ";
+        $this->db->query($sql, [
+            $params->shop_quantity,
+            $params->shop_no,
+            $params->groupno,
+            $params->memberno
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 刪除購物清單 item
+     *
+     * @param object $params
+     *
+     * @var string $sql 刪除購物清單 item
+     *
+     * @return bool
+     */
+    public function delete_shop_item($params)
+    {
+        $sql="DELETE FROM shopping_list
+              WHERE shopping_list_no = ? AND group_no = ? AND member_no = ?";
+        $this->db->query($sql, [
+            $params->shop_no,
+            $params->groupno,
+            $params->memberno
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

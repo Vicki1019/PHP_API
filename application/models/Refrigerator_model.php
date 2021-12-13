@@ -336,7 +336,7 @@ class Refrigerator_model extends CI_Model
     {
         $sql = "UPDATE refre_list
                 SET food_name = ?, quantity = ?, unit_no = ?, exp_date = ?, alert_date = ?, kind_no = ?, locate_no = ?, ck_date = ?, exp_state = ?, photo = ?
-                WHERE member_no = ? AND group_no = ? AND refre_list_no = ?";
+                WHERE group_no = ? AND refre_list_no = ?";
         $this->db->query($sql, [
             $params->foodname,
             $params->quantity,
@@ -348,7 +348,6 @@ class Refrigerator_model extends CI_Model
             $params->ckdate,
             $params->expstate,
             $params->photo,
-            $params->memberno,
             $params->groupno,
             $params->itemID
         ]);
@@ -397,13 +396,12 @@ class Refrigerator_model extends CI_Model
     public function delete_ref_item($params)
     {
         //0是未刪除 1是已刪除
-        $sql = "UPDATE refre_list SET is_delete=1 WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";
+        $sql = "UPDATE refre_list SET is_delete=1 WHERE refre_list_no = ? AND group_no = ?";
         /*$sql="DELETE FROM refre_list
               WHERE refre_list_no = ? AND group_no = ? AND member_no = ?";*/
         $this->db->query($sql, [
             $params->itemID,
-            $params->groupno,
-            $params->memberno,
+            $params->groupno
         ]);
 
         if ($this->db->affected_rows() > 0) {

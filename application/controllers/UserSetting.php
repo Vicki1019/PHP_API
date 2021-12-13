@@ -100,9 +100,11 @@ class UserSetting extends CI_Controller
 
     public function update_refname(){
         $email = $this->input->post('email');
-        $group_no = $this->UserSetting_model->getgroupno($email);
+        $member_no = $this->UserSetting_model->getmemberno($email);
+        $group_no = $this->UserSetting_model->get_user_locate($email);
         $refname = $this->input->post('refname');
         $params = (object)[
+            'member_no' => $member_no,
             'refname' => $refname,
             'group_no' => $group_no
         ];
@@ -171,14 +173,50 @@ class UserSetting extends CI_Controller
 
     public function update_notify_time(){
         $email = $this->input->post('email');
+        $member_no = $this->UserSetting_model->getmemberno($email);
         $new_time = $this->input->post('notify_time');
         $params = (object)[
             'email' => $email,
+            'member_no' => $member_no,
             'new_time' => $new_time
         ];
         $result = $this->UserSetting_model->update_notify_time($params);
+        $old_ref_alert = $this->UserSetting_model->get_reflist_alert($member_no);
+        $old_shop_alert = $this->UserSetting_model->get_shoplist_alert($member_no);
         if($result != 0){
-             print "success";
+            if($old_ref_alert==false){
+                print "failure";
+            }else{
+                //修改冰箱清單推播時間
+                foreach ($old_ref_alert as $row => $v){
+                    $new_ref_alert = date('Y/m/d', strtotime($v['alert_date']))." ".$new_time;
+                    //print $new_ref_alert;
+                    $ref_params = (object)[
+                        'member_no' => $member_no,
+                        'food_no' =>$v['refre_list_no'],
+                        'new_ref_alert' => $new_ref_alert
+                    ];
+                    $update_ref_alert = $this->UserSetting_model->update_reflist_notify($ref_params);
+                    if($update_ref_alert == false){
+                        print "failure";
+                    }
+                }
+                //修改購物清單推播時間
+                foreach ($old_shop_alert as $row => $v){
+                    $new_shop_alert = date('Y/m/d', strtotime($v['hint_datetime']))." ".$new_time;
+                    //print $new_shop_alert;
+                    $shop_params = (object)[
+                        'member_no' => $member_no,
+                        'shoplist_no' => $v['shopping_list_no'],
+                        'new_shop_alert' => $new_shop_alert
+                    ];
+                    $update_shop_alert = $this->UserSetting_model->update_shoplist_notify($shop_params);
+                    if($update_shop_alert == false){
+                        print "failure";
+                    }
+                }
+                print "success";
+            }             
         }else{
             print "failure";
         }

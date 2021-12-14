@@ -195,4 +195,23 @@ class Group_model extends CI_Model
         $query = $this->db->query($sql, $invite_code);
         return $query->row_array();
     }
+
+    /**
+     * 刪除群組
+     *
+     * @param string $group_no 群組編號
+     * @param string $member_no 使用者編號
+     *
+     * @return mixed
+     */
+    public function delete_group($group_no)
+    {
+        $sql = "DELETE FROM group_code WHERE group_no = ?";
+        $query = $this->db->query($sql, $group_no);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

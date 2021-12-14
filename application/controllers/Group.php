@@ -109,4 +109,14 @@ class Group extends CI_Controller
 			print "notdefault";
 		}
 	}
+
+	public function delete_group(){
+		$group_no = $this->input->post('group_no');
+		$result = $this->Group_model->delete_group($group_no);
+		if($result!=0){
+			print "success";
+		}else{
+			print "failure";
+		}
+	}
 }

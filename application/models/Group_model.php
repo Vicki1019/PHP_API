@@ -111,6 +111,25 @@ class Group_model extends CI_Model
         }
     }
 
+    /**
+     * 檢查是否為預設群組
+     *
+     * @param string $group_no 群組編號
+     *
+     * @return mixed
+     */
+    public function check_default_group($group_no)
+    {
+        $sql = "SELECT member_no FROM member_info WHERE group_no = ?";
+        $query = $this->db->query($sql, $group_no);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
     public function check_group($invite_code)
     {
         $sql = "SELECT group_cn FROM group_code WHERE group_code.group_no = ?";
@@ -123,6 +142,14 @@ class Group_model extends CI_Model
         }
     }
 
+    /**
+     * 檢查是否已加入該群組
+     *
+     * @param string $invite_code 群組編號
+     * @param string $member_no 使用者編號
+     *
+     * @return mixed
+     */
     public function check_join_group($params)
     {
         $sql = "SELECT group_cn FROM group_code WHERE group_code.group_no=? AND member_no=?";
@@ -137,7 +164,15 @@ class Group_model extends CI_Model
         }
     }
 
-
+    /** 
+     * 用邀請碼加入群組
+     *
+     * @param string $member_no 使用者編號
+     * @param string $invite_code 群組編號
+     * @param string $group_cn 群組名稱
+     *
+     * @return mixed
+     */
     public function join_group($params)
     {
         $sql = "INSERT INTO group_code (member_no, group_no, group_cn)

@@ -99,4 +99,14 @@ class Group extends CI_Controller
 			}
 		}
 	}
+
+	public function check_default_group(){
+		$group_no = $this->input->post('group_no');
+		$result = $this->Group_model->check_default_group($group_no);
+		if($result!=0){
+			print "isdefault";
+		}else{
+			print "notdefault";
+		}
+	}
 }

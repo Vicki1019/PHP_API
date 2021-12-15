@@ -119,4 +119,25 @@ class Group extends CI_Controller
 			print "failure";
 		}
 	}
+
+	public function delete_group_member(){
+		$email = $this->input->post('email');
+		$member_no = $this->UserSetting_model->getmemberno($email);
+		$group_no = $this->input->post('group_no');
+		$params = (object)[
+			'member_no' => $member_no,
+			'group_no' => $group_no,
+		];
+		$check_default_member = $this->Group_model->check_default_member($params);
+		if($check_default_member == false){
+			$result = $this->Group_model->delete_group_member($params);
+			if($result!=0){
+				print "success";
+			}else{
+				print "failure";
+			}
+		}else{
+			print "isdefault";
+		}
+	}
 }

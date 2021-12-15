@@ -171,7 +171,7 @@ class Group_model extends CI_Model
      * @param string $invite_code 群組編號
      * @param string $group_cn 群組名稱
      *
-     * @return mixed
+     * @return bool
      */
     public function join_group($params)
     {
@@ -202,12 +202,56 @@ class Group_model extends CI_Model
      * @param string $group_no 群組編號
      * @param string $member_no 使用者編號
      *
-     * @return mixed
+     * @return bool
      */
     public function delete_group($group_no)
     {
         $sql = "DELETE FROM group_code WHERE group_no = ?";
         $query = $this->db->query($sql, $group_no);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 檢查是否為預設群組創建者
+     *
+     * @param string $member_no 使用者編號
+     * @param string $group_no 群組編號
+     *
+     * @return bool
+     */
+    public function check_default_member($params)
+    {
+        $sql = "SELECT member_no FROM member_info WHERE group_no = ? AND member_no=?";
+        $query = $this->db->query($sql, [
+            $params->group_no,
+            $params->member_no,
+        ]);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 刪除群組成員
+     *
+     * @param string $group_no 群組編號
+     * @param string $member_no 使用者編號
+     *
+     * @return bool
+     */
+    public function delete_group_member($params)
+    {
+        $sql = "DELETE FROM group_code WHERE group_no = ? AND member_no=?";
+        $query = $this->db->query($sql, [
+            $params->group_no,
+            $params->member_no,
+        ]);
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {

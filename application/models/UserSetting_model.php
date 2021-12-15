@@ -469,4 +469,7 @@ class UserSetting_model extends CI_Model
                 return false;
             }
     }
+    public function add_kind_photo(){
+        
+    }
 }

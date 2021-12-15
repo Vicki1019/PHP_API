@@ -221,4 +221,8 @@ class UserSetting extends CI_Controller
             print "failure";
         }
     }
+
+    public function add_kind_photo(){
+        
+    }
 }

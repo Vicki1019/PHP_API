@@ -100,10 +100,11 @@ class Shopping_model extends CI_Model
     {
         $sql = "SELECT shopping_list_no, msg_receiver, food_name, quantity, check_box
                 FROM shopping_list
-                WHERE member_no =? AND hint_datetime =?";
+                WHERE member_no =? AND hint_datetime =? AND group_no = (SELECT locate_code FROM member_info WHERE member_no=?)";
         $query = $this->db->query($sql, [
             $params->memberno,
-            $params->choosedate
+            $params->choosedate,
+            $params->memberno
         ]);
         if ($query->num_rows() > 0) {
             return $query->result_array();

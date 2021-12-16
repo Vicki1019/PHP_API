@@ -147,11 +147,10 @@ class Shopping_model extends CI_Model
      */
     public function update_shop_name($params)
     {
-        $sql="UPDATE shopping_list SET food_name=? WHERE shopping_list_no = ? AND group_no = ? AND member_no = ? ";
+        $sql="UPDATE shopping_list SET food_name=? WHERE shopping_list_no = ? AND member_no = ? ";
         $this->db->query($sql, [
             $params->shop_name,
             $params->shop_no,
-            $params->groupno,
             $params->memberno
         ]);
 
@@ -173,11 +172,10 @@ class Shopping_model extends CI_Model
      */
     public function update_shop_quantity($params)
     {
-        $sql="UPDATE shopping_list SET quantity=? WHERE shopping_list_no = ? AND group_no = ? AND member_no = ? ";
+        $sql="UPDATE shopping_list SET quantity=? WHERE shopping_list_no = ? AND member_no = ? ";
         $this->db->query($sql, [
             $params->shop_quantity,
             $params->shop_no,
-            $params->groupno,
             $params->memberno
         ]);
 
@@ -200,10 +198,35 @@ class Shopping_model extends CI_Model
     public function delete_shop_item($params)
     {
         $sql="DELETE FROM shopping_list
-              WHERE shopping_list_no = ? AND group_no = ? AND member_no = ?";
+              WHERE shopping_list_no = ? AND member_no = ?";
         $this->db->query($sql, [
             $params->shop_no,
-            $params->groupno,
+            $params->memberno
+        ]);
+
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新購物清單勾選狀態
+     *
+     * @param object $params
+     *
+     * @var string $sql 更新購物清單勾選狀態
+     *
+     * @return bool
+     */
+    public function update_shop_checked($params)
+    {
+        $sql="UPDATE shopping_list SET check_box=?, indo_user=? WHERE shopping_list_no = ? AND member_no = ? ";
+        $this->db->query($sql, [
+            $params->ischecked,
+            $params->memberno,
+            $params->shop_no,
             $params->memberno
         ]);
 

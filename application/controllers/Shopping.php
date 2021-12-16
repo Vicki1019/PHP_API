@@ -77,8 +77,7 @@ class Shopping extends CI_Controller
         $params = (object)[
             'shop_no' => $shop_no,
             'shop_name' => $shop_name,
-            'memberno' => $member_no,
-            'groupno' => $group_no
+            'memberno' => $member_no
         ];
 
         $result = $this->Shopping_model->update_shop_name($params);
@@ -100,8 +99,7 @@ class Shopping extends CI_Controller
         $params = (object)[
             'shop_no' => $shop_no,
             'shop_quantity' => $shop_quantity,
-            'memberno' => $member_no,
-            'groupno' => $group_no
+            'memberno' => $member_no
         ];
 
         $result = $this->Shopping_model->update_shop_quantity($params);
@@ -121,8 +119,7 @@ class Shopping extends CI_Controller
 
         $params = (object)[
             'shop_no' => $shop_no,
-            'memberno' => $member_no,
-            'groupno' => $group_no
+            'memberno' => $member_no
         ];
 
         $result = $this->Shopping_model->delete_shop_item($params);
@@ -131,5 +128,26 @@ class Shopping extends CI_Controller
         }else{
             print "failure";
         }
+    }
+
+    public function update_shop_checked(){
+        $email = $this->input->post('email');
+        $shop_no = $this->input->post('shop_no');
+        $ischecked = $this->input->post('ischecked');
+        $member_no = $this->Shopping_model->getmemberno($email);
+        
+        $params = (object)[
+            'shop_no' => $shop_no,
+            'memberno' => $member_no,
+            'ischecked' => $ischecked
+        ];
+
+        $result = $this->Shopping_model->update_shop_checked($params);
+        if($result != 0){
+            print "success";
+        }else{
+            print "failure";
+        }
+
     }
 }

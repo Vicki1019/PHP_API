@@ -74,36 +74,74 @@ class Login extends CI_Controller
 		$passwd = $this->input->post('passwd');
 		$passwdck = $this->input->post('passwdck');
 		$profile_picture = $this->input->post('photo');
+		$google_sign_in = $this->input->post('google_sign_in');
 
-		$params = (object)[
-			'name' => $name,
-			'email' => $email,
-			'passwd' => $passwd,
-			'passwdck' => $passwdck,
-			'photo' => $profile_picture,
-			'groupno' => $group_no
-		];
+		if($google_sign_in == "true"){
+			$params = (object)[
+				'name' => $name,
+				'email' => $email,
+				'passwd' => $passwd,
+				'passwdck' => $passwdck,
+				'photo' => $profile_picture,
+				'groupno' => $group_no,
+				'google_sign_in' => "1"
+			];
 
-		if (
-			!empty($name) && !empty($email) && !empty($passwd)
-		) {
-			$emailCheck = $this->Login_model->emailCheck($email);
-			if($emailCheck != true){
-				print("failure");
-			}else{
-				$insertResult = $this->Login_model->register($params);
-				$params = (object)[
-					'response' => 'register',
-					'id'=>$insertResult,
-				];
-				$this->lib->user($params);
-				$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
-				if (!$groupResult) {
+			if (
+				!empty($name) && !empty($email)
+			) {
+				$emailCheck = $this->Login_model->emailCheck($email);
+				if($emailCheck != true){
 					print("failure");
-				} else {
-					print("success");
+				}else{
+					$insertResult = $this->Login_model->register($params);
+					$params = (object)[
+						'response' => 'register',
+						'id'=>$insertResult,
+					];
+					$this->lib->user($params);
+					$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
+					if (!$groupResult) {
+						print("failure");
+					} else {
+						print("success");
+					}
 				}
 			}
+			
+		}else if($google_sign_in == "false"){
+			$params = (object)[
+				'name' => $name,
+				'email' => $email,
+				'passwd' => $passwd,
+				'passwdck' => $passwdck,
+				'photo' => $profile_picture,
+				'groupno' => $group_no,
+				'google_sign_in' => "0"
+			];
+
+			if (
+				!empty($name) && !empty($email) && !empty($passwd)
+			) {
+				$emailCheck = $this->Login_model->emailCheck($email);
+				if($emailCheck != true){
+					print("failure");
+				}else{
+					$insertResult = $this->Login_model->register($params);
+					$params = (object)[
+						'response' => 'register',
+						'id'=>$insertResult,
+					];
+					$this->lib->user($params);
+					$groupResult = $this->Group_model->group($insertResult,$group_no,$name);
+					if (!$groupResult) {
+						print("failure");
+					} else {
+						print("success");
+					}
+				}
+			}
+			
 		}
 	}
 }

@@ -98,7 +98,7 @@ class Group_model extends CI_Model
 
     public function get_group_member($invite_code)
     {
-        $sql = "SELECT group_cn, member_info.member_nickname, member_info.email 
+        $sql = "SELECT group_cn, member_info.member_nickname, member_info.email, profile_picture 
                 FROM group_code
                 LEFT JOIN member_info ON member_info.member_no = group_code.member_no
                 WHERE group_code.group_no = ?";

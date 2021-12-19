@@ -22,9 +22,11 @@ class Login extends CI_Controller
 
     public function login()
     {
+		$email = $this->input->post('email');
+		$passwd = $this->input->post('passwd');
 		$params = (object)[
-			'email' => $this->input->post('email'),
-			'passwd' => $this->input->post('passwd'),
+			'email' => $email,
+			'passwd' => $passwd
 		];
 
         $result = $this->Login_model->login($params);
@@ -34,6 +36,8 @@ class Login extends CI_Controller
 			$userinfo = [
 				'response' => 'failure'
 			];
+			print $email;
+			print $passwd;
 			$this->output->set_output(json_encode([
 				'userinfo' => array($userinfo)
 			], JSON_UNESCAPED_UNICODE));

@@ -166,7 +166,7 @@ class Refrigerator_model extends CI_Model
      */
     public function getkind($params)
     {
-        $sql = "SELECT kind_cn, kind_photo FROM food_kind_code 
+        $sql = "SELECT kind_cn FROM food_kind_code 
         WHERE food_kind_code.member_no = (SELECT member_info.member_no FROM member_info  WHERE email=?) 
         OR food_kind_code.member_no = '0'";
         $query = $this->db->query($sql, [

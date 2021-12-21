@@ -36,8 +36,7 @@ class Refrigerator extends CI_Controller
         }else{
             foreach ($result as $row => $v){
                 $kindlist['kind'][]=[
-                    'kind_cn' => $v['kind_cn'],
-                    'kind_photo' => $v['kind_photo']
+                    'kind_cn' => $v['kind_cn']
                 ];
             }
         }

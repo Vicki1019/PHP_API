@@ -222,7 +222,25 @@ class UserSetting extends CI_Controller
         }
     }
 
-    public function add_kind_photo(){
-        
+    public function getKind_setting()
+    {
+        $email = $this->input->post('email');
+        $params = (object)[
+            'email' => $email
+        ];
+        //$kindlist['kind'] = $this->Refrigerator_model->getkind($params);
+        $result = $this->UserSetting_model->getkind($params);
+        if($result == false){
+            print "failure";
+        }else{
+            foreach ($result as $row => $v){
+                $kindlist['kind'][]=[
+                    'kind_cn' => $v['kind_cn'],
+                    'kind_photo' => $v['kind_photo']
+                ];
+            }
+        }
+        $this->output->set_content_type('application/json');
+        $this->output->set_output(json_encode($kindlist, JSON_UNESCAPED_UNICODE));
     }
 }

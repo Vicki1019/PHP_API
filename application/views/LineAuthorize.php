@@ -12,7 +12,7 @@
             var URL = 'https://notify-bot.line.me/oauth/authorize?';
                 URL += 'response_type=code';
                 URL += '&client_id=AozwCtchOfAAovlPFxAt42'; //CLIENT_ID
-                URL += '&redirect_uri=https://10.0.67.94/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=<?= $email ?>'; //Callback URL
+                URL += '&redirect_uri=https://172.16.1.44/PHP_API/index.php/LineNotify/GetAuthorizeCode?email=<?= $email ?>'; //Callback URL
                 URL += '&scope=notify';
                 URL += '&state=NO_STATE';
                 window.location.href = URL;
